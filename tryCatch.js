@@ -9,7 +9,10 @@ let expr, res;
 
 while (true) {
     expr = prompt("Enter expression to calculate", "2-");
-    if (expr == null) break 
+    if (expr == null) {
+        res = "Exit"
+        break;
+    }
 
     try {
         res = eval(expr);
