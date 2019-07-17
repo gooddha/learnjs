@@ -16,6 +16,7 @@ function CoffeeMachine(power) {
     }
 
     this.run = function () {
+        alert('Кофеварка включена');
         timerId = setTimeout(onReady, getBoilTime());
     };
 
