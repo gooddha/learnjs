@@ -105,7 +105,6 @@ function Fridge(power) {
         } else {
             parentDisable();
         }
-
     }
 
     this.addFood = function() {
@@ -127,12 +126,19 @@ function Fridge(power) {
     }
 
     this.removeFood = function(item) {
+
+        var idx = food.indexOf(item);
+        if (idx != -1) food.splice(idx, 1);
+
+        /*
         food.forEach((element, index) => {
             if (element == item) {
                 food.splice(index, 1)
             }
         });
+        */
     }
+
 
     this.filterFood = function(func) {
         return food.filter(func);
@@ -168,7 +174,7 @@ alert(fridge.getFood()); // внутри по-прежнему: котлета, 
 Публичный метод filterFood(func), который возвращает всю еду, для которой func(item) == true
 Публичный метод removeFood(item), который удаляет еду item из холодильника.
 */
-/*
+
 var fridge = new Fridge(500);
 fridge.enable();
 fridge.addFood({
@@ -188,7 +194,7 @@ fridge.addFood({
     calories: 150
 });
 
-fridge.removeFood("нет такой еды"); // без эффекта
+fridge.removeFood("сок"); // без эффекта
 alert(fridge.getFood().length); // 4
 
 var dietItems = fridge.filterFood(function (item) {
@@ -201,11 +207,12 @@ dietItems.forEach(function (item) {
 });
 
 alert(fridge.getFood()); // 2
-*/
 
+/*
 // Переопределите метод disable холодильника, чтобы при наличии в нём еды он выдавал ошибку.
 var fridge = new Fridge(500);
 fridge.enable();
 fridge.addFood("кус-кус");
 alert(fridge.getFood())
 fridge.disable(); // ошибка, в холодильнике есть еда
+*/
