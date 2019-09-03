@@ -4,7 +4,7 @@ read() (читать) запрашивает два значения и сохр
 sum() (суммировать) возвращает сумму сохранённых значений.
 mul() (умножить) перемножает сохранённые значения и возвращает результат.
 */
-
+/*
 let calculator = {
     read() {
       this.a = parseInt(prompt('Введите первое число', '0'));
@@ -21,4 +21,20 @@ let calculator = {
   calculator.read();
   alert( calculator.sum() );
   alert( calculator.mul() );
-  
+  */
+var alert = console.log;
+ var name = "";
+
+ var user = {
+ name: "Василий",
+ 
+ export: function() {
+ return {
+      name: "returned object",
+      value: function() { return this.name}
+ };
+ }
+ 
+ };
+ 
+ alert( user.export().value() );
