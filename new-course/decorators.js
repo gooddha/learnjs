@@ -130,6 +130,23 @@ P.S. Аргументы и контекст this, переданные в f1000,
 */
 
 function throttle(f, ms) {
+  let waiting = false;
+
+  return function() {     
+    if (!waiting) {
+      f.apply(this, arguments);
+      waiting = true;
+    }
+
+    let timeout = setTimeout(() => {
+      waiting = false;
+      f.apply(this, arguments);
+    }, ms);
+
+    clearTimeout(timeout);
+
+
+  }
   
 }
 
