@@ -128,27 +128,60 @@ setTimeout( () => f(5), 1500); // проигнорирован (прошло т�
 Пример кода:
 P.S. Аргументы и контекст this, переданные в f1000, должны быть переданы в оригинальную f.
 */
-
+/*first variant
 function throttle(f, ms) {
   let waiting = false;
+  let lastThis;
+  let lastArgs;
 
   return function() {     
+    lastThis = this;
+    lastArgs = arguments;
+
     if (!waiting) {
       f.apply(this, arguments);
       waiting = true;
     }
 
-    let timeout = setTimeout(() => {
+    setTimeout(() => {
+      if (lastThis == this && lastArgs == arguments) f.apply(lastThis, lastArgs);
+      waiting = false;      
+    }, ms);
+ 
+  }  
+}
+*/
+
+function throttle(f, ms) {
+  let waiting = false;
+  let lastThis, lastArgs;
+
+  function wrapper() {
+    if (waiting) {
+      lastThis = this;
+      lastArgs = arguments;
+      return;
+    }
+
+    f.apply(this, arguments);
+    waiting = true;
+
+    setTimeout(() => {
       waiting = false;
-      f.apply(this, arguments);
+      if (lastArgs) {
+        wrapper.apply(lastThis, lastArgs);
+        lastThis = lastArgs = null;      
+      }
     }, ms);
 
-    clearTimeout(timeout);
-
-
   }
-  
+
+  return wrapper;
 }
+
+
+
+
 
 function f(a) {
   console.log(a)
@@ -160,6 +193,10 @@ let f1000 = throttle(f, 1000);
 f1000(1); // показывает 1
 f1000(2); // (ограничение, 1000 мс ещё нет)
 f1000(3); // (ограничение, 1000 мс ещё нет)
+f1000(4); // (ограничение, 1000 мс ещё нет)
+f1000(5); // (ограничение, 1000 мс ещё нет)
+f1000(6); // (ограничение, 1000 мс ещё нет)
+f1000(6); // (ограничение, 1000 мс ещё нет)
 
 // когда 1000 мс истекли ...
 // ...выводим 3, промежуточное значение 2 было проигнорировано
