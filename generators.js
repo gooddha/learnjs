@@ -44,16 +44,14 @@ let alert = console.log;
 
 // https://learn.javascript.ru/generators#psevdosluchaynyy-generator
 // Псевдослучайный генератор
-function* calcNext(prev) {
-  yield prev * 16807 % 2147483647;
-}
 
 function* pseudoRandom(seed) {
   let prev = seed;
 
   while(true) {
-    yield* calcNext(prev);
-    prev = prev * 16807 % 2147483647;
+    result = prev * 16807 % 2147483647
+    yield result;
+    prev = result;
   }
 
 }
