@@ -49,9 +49,8 @@ function* pseudoRandom(seed) {
   let prev = seed;
 
   while(true) {
-    result = prev * 16807 % 2147483647
-    yield result;
-    prev = result;
+    prev = prev * 16807 % 2147483647
+    yield prev;
   }
 
 }
