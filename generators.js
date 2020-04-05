@@ -44,19 +44,25 @@ let alert = console.log;
 
 // https://learn.javascript.ru/generators#psevdosluchaynyy-generator
 // Псевдослучайный генератор
-
-let generator = pseudoRandom(1);
-
-alert(generator.next().value); // 16807
-alert(generator.next().value); // 282475249
-alert(generator.next().value); // 1622650073
+function* calcNext(prev) {
+  yield prev * 16807 % 2147483647;
+}
 
 function* pseudoRandom(seed) {
   let prev = seed;
 
-  yield next = prev * 16807 % 2147483647;
-  console.log(next);
+  while(true) {
+    yield* calcNext(prev);
+    prev = prev * 16807 % 2147483647;
+  }
 
-  prev = next;
-  console.log(prev)
 }
+
+let generator = pseudoRandom(1);
+
+
+for(let randomValue of generator) {
+  alert(randomValue); // 16807
+}
+
+
