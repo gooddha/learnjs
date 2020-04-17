@@ -1,0 +1,50 @@
+<!-- https://learn.javascript.ru/dom-attributes-and-properties#poluchite-atribut
+Получите атрибут
+Напишите код для выбора элемента с атрибутом data-widget-name из документа и прочитайте его значение. -->
+<!-- 
+<!DOCTYPE html>
+<html>
+<body>
+
+  <div data-widget-name="menu">Choose the genre</div>
+
+  <script>
+    /* your code */
+    let elem = document.querySelector('[data-widget-name]');
+    alert (elem.dataset.widgetName);
+  </script>
+</body>
+</html> -->
+
+<!DOCTYPE HTML>
+<html>
+<body>
+
+  <a name="list">The list:</a>
+  <ul>
+    <li><a href="http://google.com">http://google.com</a></li>
+    <li><a href="/tutorial">/tutorial.html</a></li>
+    <li><a href="local/path">local/path</a></li>
+    <li><a href="ftp://ftp.com/my.zip">ftp://ftp.com/my.zip</a></li>
+    <li><a href="http://nodejs.org">http://nodejs.org</a></li>
+    <li><a href="http://internal.com/test">http://internal.com/test</a></li>
+  </ul>
+
+  <script>
+    // ...your code...
+    for (let anchor of document.querySelectorAll('ul a')) {
+      
+      if (anchor.attributes['href'].value.includes('://') && 
+          !anchor.attributes['href'].value.startsWith('http://internal.com')) {
+
+        anchor.style.color = 'orange';
+        
+      }
+      
+    }
+
+
+  </script>
+
+</body>
+</html>

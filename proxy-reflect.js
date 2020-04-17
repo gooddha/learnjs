@@ -60,24 +60,42 @@ let alert = console.log;
 // P.S. В этой задаче ограничьтесь, пожалуйста, только записью свойства. Остальные операции могут быть реализованы похожим образом.
 
 
- function makeObservable(target) {
-  target.observe = function(handler) {
-    handler(key, value);
-  }
+//  function makeObservable(target) {
+//   target.observe = function(handler) {
+//     handler(key, value);
+//   }
 
+//   return new Proxy(target, {
+//     set(target, prop) {
+
+//     }
+//   })
+// }
+
+// let user = {};
+// user = makeObservable(user);
+
+// user.observe((key, value) => {
+//   alert(`SET ${key}=${value}`);
+// });
+
+// user.name = "John"; // выводит: SET name=John
+
+let user = {
+  name: "John"
+};
+  
+function wrap(target) {
   return new Proxy(target, {
-    set(target, prop) {
-
-    }
-  })
-}
-
-let user = {};
-user = makeObservable(user);
-
-user.observe((key, value) => {
-  alert(`SET ${key}=${value}`);
-});
-
-user.name = "John"; // выводит: SET name=John
-
+  
+  get (target, prop) {
+    if ( !(prop in target) ) {
+      console.log('Ошибочка вышла');
+      return false;
+    } else return target[prop];
+  }
+  
+  });
+  }
+  
+  user = wrap(user);
