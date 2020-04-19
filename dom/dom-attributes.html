@@ -33,15 +33,17 @@
   <script>
     // ...your code...
     for (let anchor of document.querySelectorAll('ul a')) {
+      let link = anchor.attributes['href'].value;
       
-      if (anchor.attributes['href'].value.includes('://') && 
-          !anchor.attributes['href'].value.startsWith('http://internal.com')) {
+      if (link.includes('://') && 
+          !link.startsWith('http://internal.com')) {
 
         anchor.style.color = 'orange';
-        
+
       }
       
     }
+
 
 
   </script>

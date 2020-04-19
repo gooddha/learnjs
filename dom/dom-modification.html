@@ -1,0 +1,159 @@
+<!-- https://learn.javascript.ru/modifying-document#ochistite-element -->
+<!-- Очистите элемент
+Создайте функцию clear(elem), которая удаляет всё содержимое из elem. -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+<body>
+<!--  first task  https://learn.javascript.ru/modifying-document#ochistite-element
+
+ <ol id="elem">
+  <li>Привет</li>
+  <li>Мир</li>
+</ol>
+
+<script>
+  function clear(elem) {
+    elem.innerHTML = '';
+  }
+
+  clear(elem); // очищает список
+</script> -->
+
+
+
+<!-- second task https://learn.javascript.ru/modifying-document#sozdayte-spisok
+Напишите интерфейс для создания списка.
+
+Для каждого пункта:
+
+Запрашивайте содержимое пункта у пользователя с помощью prompt.
+Создавайте элемент <li> и добавляйте его к <ul>.
+Процесс прерывается, когда пользователь нажимает Esc или вводит пустую строку.
+Все элементы должны создаваться динамически.
+
+Если пользователь вводит HTML-теги -– пусть в списке они показываются как обычный текст.  
+
+
+<script>
+  let ul = document.createElement('ul');
+  document.body.append(ul);
+
+  let userInput = prompt('Enter some text to add...', '');
+
+  while(userInput) {
+    let li = document.createElement('li');
+    li.textContent = userInput;
+    
+    ul.append(li);
+    userInput = prompt('Enter some text to add...', '');  
+  };
+</script>
+-->
+
+<!-- https://learn.javascript.ru/modifying-document#sozdayte-derevo-iz-obekta 
+Создайте дерево из объекта
+Напишите функцию createTree, которая создаёт вложенный список ul/li из объекта.
+
+
+<div id="tree"></div>
+
+<script>
+  
+  let data = {
+    "Рыбы": {
+      "форель": {},
+      "лосось": {}
+    },
+    
+  "Деревья": {
+    "Огромные": {
+      "секвойя": {},
+      "дуб": {}
+    },
+    "Цветковые": {
+      "яблоня": {},
+      "магнолия": {}
+    }
+  }
+};
+
+let container = document.getElementById('tree');
+createTree(container, data); // создаёт дерево в контейнере
+
+function createTree(container, data) {
+  let ul = document.createElement('ul');
+  container.append(ul);
+  
+  for (let [key, value] of Object.entries(data)) {
+    let li = document.createElement('li');
+    li.innerText = key;
+    
+    if (value instanceof Object && Object.keys(value).length > 0) {
+      createTree(li, value);
+    }
+    
+    ul.append(li);
+  }
+  
+}
+
+</script>
+
+-->
+
+<!-- https://learn.javascript.ru/modifying-document#vyvedite-spisok-potomkov-v-dereve
+  Выведите список потомков в дереве
+  
+  Есть дерево, организованное в виде вложенных списков ul/li.
+  Напишите код, который добавит каждому элементу списка <li> количество вложенных в него элементов. Узлы нижнего уровня, без детей – пропускайте.
+  -->
+  
+  <ul>
+    <li>Животные
+      <ul>
+        <li>Млекопитающие
+          <ul>
+            <li>Коровы</li>
+            <li>Ослы</li>
+            <li>Собаки</li>
+            <li>Тигры</li>
+          </ul>
+        </li>
+        <li>Другие
+          <ul>
+            <li>Змеи</li>
+            <li>Птицы</li>
+            <li>Ящерицы</li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+    <li>Рыбы
+      <ul>
+        <li>Аквариумные
+          <ul>
+            <li>Гуппи</li>
+            <li>Скалярии</li>
+          </ul>
+        </li>
+        <li>Морские
+          <ul>
+            <li>Морская форель</li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+  </ul>
+  
+  <script>
+    // ... ваш код ...
+  </script>
+</body>
+</html>
