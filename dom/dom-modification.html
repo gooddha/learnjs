@@ -113,7 +113,7 @@ function createTree(container, data) {
   
   Есть дерево, организованное в виде вложенных списков ul/li.
   Напишите код, который добавит каждому элементу списка <li> количество вложенных в него элементов. Узлы нижнего уровня, без детей – пропускайте.
-  -->
+  
   
   <ul>
     <li>Животные
@@ -177,5 +177,69 @@ function createTree(container, data) {
     // let elements = rootUl.querySelectorAll('*');
     // console.log(elements);
   </script>
+-->
+
+<!-- https://learn.javascript.ru/modifying-document#sozdayte-kalendar-v-vide-tablitsy 
+Создайте календарь в виде таблицы
+
+Напишите функцию createCalendar(elem, year, month).
+Вызов функции должен создать календарь для заданного месяца month в году year и вставить его в elem.
+Календарь должен быть таблицей, где неделя – это <tr>, а день – это <td>. У таблицы должен быть заголовок с названиями дней недели, каждый день – <th>, первым днём недели должен быть понедельник.
+
+-->
+<style>
+    table {
+      border-collapse: collapse;
+    }
+
+    td,
+    th {
+      border: 1px solid black;
+      padding: 3px;
+      text-align: center;
+    }
+
+    th {
+      font-weight: bold;
+      background-color: #E6E6E6;
+    }
+  </style>
+
+<script>
+  function createCalendar(elem, year, month) {
+
+    let week = ['пн', 'вт', 'ср', 'чт', 'пт', 'сб', 'вс'];
+
+    let table = document.createElement('table');
+    let caption = table.createCaption();
+
+    let date = new Date(year, month);
+
+    caption.innerHTML = `Календарь на ${date.getMonth() + 1}.${date.getFullYear()}`
+
+    let head = table.createTHead();
+
+    let headRow = document.createElement('tr');
+    head.append(headRow);    
+
+    for (let day of week) {
+      let th = document.createElement('th');
+      th.innerHTML = day;
+      headRow.append(th);
+    }
+
+    let body = table.createTBody();
+
+
+    
+    console.dir(table);
+
+    elem.append(table);
+
+  }
+
+  createCalendar(document.body, 2012, 9);
+</script>
+
 </body>
 </html>
