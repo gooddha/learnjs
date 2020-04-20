@@ -153,7 +153,29 @@ function createTree(container, data) {
   </ul>
   
   <script>
-    // ... ваш код ...
+    let rootUl = document.querySelector('ul');
+    let count;
+    
+    for (let child of rootUl.querySelectorAll('li')) {
+      count = 0;
+      countChildren(child);
+      if (count > 0) child.firstChild.textContent += `[${count}]`
+    } 
+    
+    function countChildren(element) {
+
+      let uls = element.querySelectorAll('ul');
+
+      for (let ul of uls) {
+        count += ul.children.length;          
+      }
+
+      
+    }
+
+
+    // let elements = rootUl.querySelectorAll('*');
+    // console.log(elements);
   </script>
 </body>
 </html>
