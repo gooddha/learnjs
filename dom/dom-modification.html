@@ -208,14 +208,21 @@ function createTree(container, data) {
 <script>
   function createCalendar(elem, year, month) {
 
+    
+
     let week = ['пн', 'вт', 'ср', 'чт', 'пт', 'сб', 'вс'];
 
     let table = document.createElement('table');
     let caption = table.createCaption();
 
+    month--;
     let date = new Date(year, month);
+    let humanMonth = date.getMonth() + 1;
+    humanMonth = humanMonth < 10 ? '0' + humanMonth : humanMonth;
 
-    caption.innerHTML = `Календарь на ${date.getMonth() + 1}.${date.getFullYear()}`
+    caption.innerHTML = `Календарь на ${humanMonth}.${date.getFullYear()}
+`;
+    caption.append(document.createElement('hr'));
 
     let head = table.createTHead();
 
@@ -227,13 +234,51 @@ function createTree(container, data) {
       th.innerHTML = day;
       headRow.append(th);
     }
-
+    
+    let actualMonth = new Date(date).getMonth();
+    
+    
     let body = table.createTBody();
+    
+    for (let i = 1; i <= 5; i++) {
+      
+      let bodyRow = document.createElement('tr');
+      body.append(bodyRow);
+      
+      for (let j = 0; j <= 6; j++) {
+        let day = date.getDay();
+        let td = document.createElement('td');
 
+        if (date.getMonth() !== actualMonth) {
+          td.style.color = 'lightgray';
+        }
+
+        if (i == 1 && j < day - 1) {
+          let pastMonth = new Date(date);
+          pastMonth.setDate(date.getDate() - 6 + j)
+          td.innerHTML = pastMonth.getDate();
+
+          if (pastMonth.getMonth() !== actualMonth) {
+            td.style.color = 'lightgray';
+          }
+
+          bodyRow.append(td);
+          continue;
+        }
+
+        if (day == 6 || day == 0) {
+          td.style.color = 'red';
+        }
+          
+        td.innerHTML = `${date.getDate()}`;
+        bodyRow.append(td);
+        date.setDate(date.getDate() + 1);
+
+      }
+
+    }
 
     
-    console.dir(table);
-
     elem.append(table);
 
   }
