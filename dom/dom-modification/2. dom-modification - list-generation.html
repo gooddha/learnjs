@@ -1,0 +1,45 @@
+<!-- https://learn.javascript.ru/modifying-document#ochistite-element -->
+<!-- Очистите элемент
+Создайте функцию clear(elem), которая удаляет всё содержимое из elem. -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+<body>
+
+  <!-- second task https://learn.javascript.ru/modifying-document#sozdayte-spisok
+    Напишите интерфейс для создания списка.
+    
+    Для каждого пункта:
+    
+    Запрашивайте содержимое пункта у пользователя с помощью prompt.
+    Создавайте элемент <li> и добавляйте его к <ul>.
+      Процесс прерывается, когда пользователь нажимает Esc или вводит пустую строку.
+      Все элементы должны создаваться динамически.
+      
+      Если пользователь вводит HTML-теги -– пусть в списке они показываются как обычный текст.  
+    -->
+
+
+<script>
+  let ul = document.createElement('ul');
+  document.body.append(ul);
+
+  let userInput = prompt('Enter some text to add...', '');
+
+  while(userInput) {
+    let li = document.createElement('li');
+    li.textContent = userInput;
+    
+    ul.append(li);
+    userInput = prompt('Enter some text to add...', '');  
+  };
+</script>
+
+</body>
+</html>

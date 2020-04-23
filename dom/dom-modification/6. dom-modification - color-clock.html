@@ -1,0 +1,78 @@
+<!-- https://learn.javascript.ru/modifying-document#ochistite-element -->
+<!-- Очистите элемент
+Создайте функцию clear(elem), которая удаляет всё содержимое из elem. -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+<body>
+    <!-- https://learn.javascript.ru/modifying-document#tsvetnye-chasy-s-ispolzovaniem-setinterval 
+    Цветные часы с использованием setInterval
+    Создайте цветные часы как в примере ниже:
+    Для стилизации используйте HTML/CSS, JavaScript должен только обновлять время в элементах.
+    -->
+
+    <style>
+
+      .hours {
+        color: red;
+      }
+
+      .minutes {
+        color: green;
+      }
+
+      .seconds {
+        color: blue;
+      }
+
+    
+    </style>
+    
+  <!-- клик по этой кнопке вызовет clockStart() -->
+  <input type="button" onclick="clockStart()" value="Старт">
+
+  <!-- клик по этой кнопке вызовет clockStop() -->
+  <input type="button" onclick="clockStop()" value="Стоп">
+
+  <script>
+    
+    let interval;
+
+    let clock = document.createElement('div');
+    clock.className = 'clock'
+    document.body.prepend(clock);
+    
+    function clockStart() {
+      
+      interval = setInterval(() => {
+        let d = new Date();
+
+        let hours = `<span class="hours">${addZero(d.getHours())}</span>`;
+        let minutes = `<span class="minutes">${addZero(d.getMinutes())}</span>`;
+        let seconds = `<span class="seconds">${addZero(d.getSeconds())}</span>`;
+
+        function addZero(number) {
+          return number < 10 ? '0' + number : number;
+        }
+
+        clock.innerHTML = `${hours} : ${minutes} : ${seconds}`
+        // console.log(`${hours} : ${minutes} : ${seconds}`);
+      }, 1000);
+    }
+
+    function clockStop() {
+      clearInterval(interval);
+    }
+  
+  </script>
+
+
+
+</body>
+</html>

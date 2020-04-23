@@ -1,0 +1,67 @@
+<!-- https://learn.javascript.ru/modifying-document#ochistite-element -->
+<!-- Очистите элемент
+Создайте функцию clear(elem), которая удаляет всё содержимое из elem. -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+<body>
+
+
+<!-- https://learn.javascript.ru/modifying-document#sozdayte-derevo-iz-obekta 
+Создайте дерево из объекта
+Напишите функцию createTree, которая создаёт вложенный список ul/li из объекта.
+-->
+
+<div id="tree"></div>
+
+<script>
+  
+  let data = {
+    "Рыбы": {
+      "форель": {},
+      "лосось": {}
+    },
+    
+  "Деревья": {
+    "Огромные": {
+      "секвойя": {},
+      "дуб": {}
+    },
+    "Цветковые": {
+      "яблоня": {},
+      "магнолия": {}
+    }
+  }
+};
+
+let container = document.getElementById('tree');
+createTree(container, data); // создаёт дерево в контейнере
+
+function createTree(container, data) {
+  let ul = document.createElement('ul');
+  container.append(ul);
+  
+  for (let [key, value] of Object.entries(data)) {
+    let li = document.createElement('li');
+    li.innerText = key;
+    
+    if (value instanceof Object && Object.keys(value).length > 0) {
+      createTree(li, value);
+    }
+    
+    ul.append(li);
+  }
+  
+}
+
+</script>
+
+
+</body>
+</html>

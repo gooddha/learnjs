@@ -1,0 +1,81 @@
+<!-- https://learn.javascript.ru/modifying-document#ochistite-element -->
+<!-- Очистите элемент
+Создайте функцию clear(elem), которая удаляет всё содержимое из elem. -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+<body>
+
+<!-- https://learn.javascript.ru/modifying-document#vyvedite-spisok-potomkov-v-dereve
+  Выведите список потомков в дереве
+  
+  Есть дерево, организованное в виде вложенных списков ul/li.
+  Напишите код, который добавит каждому элементу списка <li> количество вложенных в него элементов. Узлы нижнего уровня, без детей – пропускайте.
+  
+  -->  
+  <ul>
+    <li>Животные
+      <ul>
+        <li>Млекопитающие
+          <ul>
+            <li>Коровы</li>
+            <li>Ослы</li>
+            <li>Собаки</li>
+            <li>Тигры</li>
+          </ul>
+        </li>
+        <li>Другие
+          <ul>
+            <li>Змеи</li>
+            <li>Птицы</li>
+            <li>Ящерицы</li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+    <li>Рыбы
+      <ul>
+        <li>Аквариумные
+          <ul>
+            <li>Гуппи</li>
+            <li>Скалярии</li>
+          </ul>
+        </li>
+        <li>Морские
+          <ul>
+            <li>Морская форель</li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+  </ul>
+  
+  <script>
+    let rootUl = document.querySelector('ul');
+    let count;
+    
+    for (let child of rootUl.querySelectorAll('li')) {
+      count = 0;
+      countChildren(child);
+      if (count > 0) child.firstChild.textContent += `[${count}]`
+    } 
+    
+    function countChildren(element) {
+
+      let uls = element.querySelectorAll('ul');
+
+      for (let ul of uls) {
+        count += ul.children.length;          
+      }      
+    }
+
+  </script>
+
+</body>
+</html>
