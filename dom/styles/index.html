@@ -1,0 +1,82 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <style>
+    .notification {
+      position: fixed;
+      z-index: 1000;
+      padding: 5px;
+      border: 1px solid black;
+      font-size: 20px;
+      background: white;
+      text-align: center;
+    }
+
+    .welcome {
+      background: #b80000;
+      color: yellow;
+    }
+  </style>
+
+</head>
+
+<body>
+  <!-- 
+    https://learn.javascript.ru/styles-and-classes#sozdat-uvedomlenie
+    Создать уведомление
+    
+    Напишите функцию showNotification(options), которая создаёт уведомление: <div class="notification"> с заданным содержимым. Уведомление должно автоматически исчезнуть через 1,5 секунды.
+
+    Пример объекта options:
+      // показывает элемент с текстом "Hello" рядом с правой верхней частью окна.
+      showNotification({
+        top: 10, // 10px от верхней границы окна (по умолчанию 0px)
+        right: 10, // 10px от правого края окна (по умолчанию 0px)
+        html: "Hello!", // HTML-уведомление
+        className: "welcome" // дополнительный класс для div (необязательно)
+      });
+
+    Используйте CSS-позиционирование для отображения элемента в заданных координатах. Исходный документ имеет необходимые стили.
+  -->
+
+  <h2>Уведомление находится справа</h2>
+
+  <p>
+    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dolorum aspernatur quam ex eaque inventore quod voluptatem adipisci omnis nemo nulla fugit iste numquam ducimus cumque minima porro ea quidem maxime necessitatibus beatae labore soluta voluptatum
+    magnam consequatur sit laboriosam velit excepturi laborum sequi eos placeat et quia deleniti? Corrupti velit impedit autem et obcaecati fuga debitis nemo ratione iste veniam amet dicta hic ipsam unde cupiditate incidunt aut iure ipsum officiis soluta
+    temporibus. Tempore dicta ullam delectus numquam consectetur quisquam explicabo culpa excepturi placeat quo sequi molestias reprehenderit hic at nemo cumque voluptates quidem repellendus maiores unde earum molestiae ad.
+  </p>
+
+  <script>
+    function showNotification({top = 0, right = 0, className, html}) {
+      /* your code */
+
+      let div = document.createElement('div');
+      div.style.top = `${top}px`;
+      div.style.right = `${right}px`;
+      div.className = 'notification ' + className;
+      div.innerText = html;
+
+      document.body.append(div);
+
+      setInterval(() => {
+        div.remove();
+      }, 1500)
+
+    }
+
+    // test it
+    let i = 1;
+    setInterval(() => {
+      showNotification({
+        top: 10,
+        right: 10,
+        html: 'Hello ' + i++,
+        className: "welcome"
+      });
+    }, 2000);
+  </script>
+
+
+</body>
+</html>
