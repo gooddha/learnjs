@@ -1,0 +1,29 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+  <meta charset="utf-8">
+</head>
+
+<body>
+
+  <input type="button" id="hider" value="Нажмите, чтобы спрятать текст" />
+
+  <div id="text">Текст</div>
+
+
+  <!-- 
+    https://learn.javascript.ru/introduction-browser-events#skryt-element-po-nazhatiyu-knopki
+
+    Добавьте JavaScript к кнопке button, чтобы при нажатии элемент <div id="text"> исчезал.
+   -->
+   
+  <script>
+    /* ваш код */
+    hider.addEventListener('click', () => {
+      text.remove();
+    })
+  </script>
+
+</body>
+</html>
