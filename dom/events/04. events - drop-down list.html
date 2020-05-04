@@ -1,0 +1,48 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  <style>
+    .menu-arrow {
+      color: #33cc33;
+    }
+
+    ul {
+      margin: 0;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    #switcher {
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <!-- 
+    https://learn.javascript.ru/introduction-browser-events#sozdat-raskryvayuscheesya-menyu
+    Создать раскрывающееся меню
+    Создать меню, которое по нажатию открывается либо закрывается
+    P.S. HTML/CSS исходного документа можно и нужно менять.
+   -->
+   <div id="switcher" onclick="toggleList()">
+     <span class="menu-arrow closed">▶</span> 
+     <span class="menu-arrow opened hidden">▼</span> 
+     Сладости (нажми меня)!
+   </div>
+  <ul id="ul" class="hidden">
+    <li>Пирожное</li>
+    <li>Пончик</li>
+    <li>Мёд</li>
+  </ul>
+
+  <script>
+    function toggleList() {
+      document.querySelectorAll('.menu-arrow').forEach(arrow => arrow.classList.toggle('hidden'));
+      ul.classList.toggle('hidden');
+    }
+  </script>
+</body>
+</html>
