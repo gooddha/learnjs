@@ -19,6 +19,8 @@
 
     #ball {
       position: absolute;
+      top: 0;
+      left: 0;
       transition: all 1s;
     }
   </style>
@@ -28,15 +30,15 @@
     <!-- 
       https://learn.javascript.ru/introduction-browser-events#peredvinte-myach-po-polyu
       Передвиньте мяч по полю
-      Пусть мяч перемещается при клике на поле, туда, куда был клик
-      Требования:
-        Центр мяча должен совпадать с местом нажатия мыши (если это возможно без пересечения краёв поля);
-        CSS-анимация желательна, но не обязательна;
-        Мяч ни в коем случае не должен пересекать границы поля;
-        При прокрутке страницы ничего не должно ломаться;
-      Заметки:
-        Код должен уметь работать с различными размерами мяча и поля, не привязываться к каким-либо фиксированным значениям.
-        Используйте свойства event.clientX/event.clientY для определения координат мыши при клике.
+        Пусть мяч перемещается при клике на поле, туда, куда был клик
+        Требования:
+          Центр мяча должен совпадать с местом нажатия мыши (если это возможно без пересечения краёв поля);
+          CSS-анимация желательна, но не обязательна;
+          Мяч ни в коем случае не должен пересекать границы поля;
+          При прокрутке страницы ничего не должно ломаться;
+        Заметки:
+          Код должен уметь работать с различными размерами мяча и поля, не привязываться к каким-либо фиксированным значениям.
+          Используйте свойства event.clientX/event.clientY для определения координат мыши при клике.
      -->
 
 <body style="height:2000px">
@@ -55,16 +57,35 @@
     /* ваш код */
     let fieldCoords = field.getBoundingClientRect();
 
-    // ball.style.left = fieldCoords.left;
-    // ball.style.top = fieldCoords.top;
+    let ballCoords = ball.getBoundingClientRect();
+    let ballWidth = ballCoords.width;
+    let ballHeight = ballCoords.height;
 
-    
+
     field.addEventListener('click', function(e){
-      let ballCoords = ball.getBoundingClientRect();
-      ball.style.left = e.clientX - (ballCoords.width/2) + 'px';
-      ball.style.top = e.clientY - (ballCoords.height/2) + 'px';
 
-      console.log(ball.style.left, ball.style.top);
+      ballX = e.clientX - fieldCoords.x - field.clientLeft - (ballWidth/2);
+      ballY = e.clientY - fieldCoords.y - field.clientTop - (ballHeight/2);
+
+      if (ballX > 0) {
+        if (ballX + ballWidth < field.clientWidth) {
+          ball.style.left = ballX + 'px';
+        } else {
+          ball.style.left = field.clientWidth - ballWidth + 'px';
+        }
+      } else {
+        ball.style.left = '0px';
+      }
+
+      if (ballY > 0) {
+        if (ballY + ballHeight < field.clientHeight) {
+          ball.style.top = ballY + 'px';
+        } else {
+          ball.style.top = field.clientHeight - ballHeight + 'px';
+        }
+      } else {
+        ball.style.top = '0px';
+      }
       
     })
 
