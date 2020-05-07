@@ -106,14 +106,18 @@
 
   <script>
     // ...ваш код, который сделает карусель рабочей    
+    let listItems = document.querySelectorAll('#carousel li');
+    let carouselLength = 0;
+    listItems.forEach(element => {
+      carouselLength += element.getBoundingClientRect().width;
+    });
 
-    function slide(direction) {
+      function slide(direction) {
       let marginLeft = parseInt(carousel.style.marginLeft) || 0;
-      console.log(carousel.getBoundingClientRect().width)
-      console.log(marginLeft)
+      
       switch (direction) {
         case 'right':
-        if (marginLeft > -1170) {
+        if (marginLeft > -carouselLength + 390) {
           carousel.style.marginLeft = marginLeft - 390 + 'px';      
         }
           break;
@@ -121,6 +125,7 @@
           if (marginLeft) carousel.style.marginLeft = marginLeft + 390 + 'px';      
           break;
       }
+
     }
 
   </script>
