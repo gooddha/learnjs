@@ -106,24 +106,48 @@
 
   <script>
     // ...ваш код, который сделает карусель рабочей    
-    let listItems = document.querySelectorAll('#carousel li');
-    let carouselLength = 0;
-    listItems.forEach(element => {
-      carouselLength += element.getBoundingClientRect().width;
-    });
+    const imgPerPage = 3;
+    const imgSize = 130;
+    const slideAmount = imgPerPage * imgSize;
 
-      function slide(direction) {
-      let marginLeft = parseInt(carousel.style.marginLeft) || 0;
+    let listItems = document.querySelectorAll('#carousel li');
+    let carouselLength = listItems.length * imgSize;
+
+    let fullPagesCount = Math.floor(carouselLength / slideAmount);
+    let partialPageSize = carouselLength - fullPagesCount * slideAmount;
+
+    let currentPage = 1;
+
+    function slide(direction) {
+      let marginLeft = parseInt(carousel.style.marginLeft) || 0;  
       
       switch (direction) {
         case 'right':
-        if (marginLeft > -carouselLength + 390) {
-          carousel.style.marginLeft = marginLeft - 390 + 'px';      
-        }
+          if (currentPage < fullPagesCount) {
+            slideRight(slideAmount);
+          } else if (slideAmount * currentPage < carouselLength) {
+            slideRight(partialPageSize);            
+          }
+
           break;
         case 'left':
-          if (marginLeft) carousel.style.marginLeft = marginLeft + 390 + 'px';      
+          if (-marginLeft - slideAmount >= 0) {
+            slideLeft(slideAmount);
+          } else if (currentPage > 1) {
+            slideLeft(partialPageSize);
+          }
           break;
+      }
+
+      function slideRight(slideAmount) {
+        carousel.style.marginLeft = marginLeft - slideAmount + 'px';   
+        currentPage += 1;
+        
+      }
+
+      function slideLeft(slideAmount) {
+        carousel.style.marginLeft = marginLeft + slideAmount + 'px';      
+        currentPage -= 1;
       }
 
     }
