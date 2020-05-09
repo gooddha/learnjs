@@ -1,0 +1,115 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <style>
+    table {
+       border-collapse: collapse;
+     }
+     th, td {
+       border: 1px solid black;
+       padding: 4px;
+     }
+     th {
+       cursor: pointer;
+     }
+     th:hover {
+       background: yellow;
+     }
+  </style>
+</head>
+
+<body>
+
+  <table id="grid">
+    <thead>
+      <tr>
+        <th data-type="number">Возраст</th>
+        <th data-type="string">Имя</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>5</td>
+        <td>Вася</td>
+      </tr>
+      <tr>
+        <td>2</td>
+        <td>Петя</td>
+      </tr>
+      <tr>
+        <td>12</td>
+        <td>Женя</td>
+      </tr>
+      <tr>
+        <td>9</td>
+        <td>Маша</td>
+      </tr>
+      <tr>
+        <td>1</td>
+        <td>Илья</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- 
+    https://learn.javascript.ru/event-delegation#sortiruemaya-tablitsa
+    Сортируемая таблица
+      Сделать таблицу сортируемой: при клике на элемент <th> строки таблицы должны сортироваться по соответствующему столбцу.
+
+      Каждый элемент <th> имеет атрибут data-type:
+      В примере выше первый столбец содержит числа, а второй – строки. Функция сортировки должна это учитывать, ведь числа сортируются иначе, чем строки.
+
+      Сортировка должна поддерживать только типы "string" и "number".
+      P.S. Таблица может быть большой, с любым числом строк и столбцов.
+   -->
+
+  <script>
+    // ...ваш код...
+    let tbody = document.querySelector('tbody');
+    let rows = Array.from(tbody.rows);
+    
+
+    grid.addEventListener('click', (event) => {
+      if (event.target.tagName.toLowerCase() != 'th') return;
+      
+      let cellIndex = event.target.cellIndex;
+      let type = event.target.dataset.type;
+
+
+      switch (type) {
+        case 'number':
+          rows.sort((a, b) => {
+
+            let first = +a.children[cellIndex].innerText;
+            let second = +b.children[cellIndex].innerText;
+
+            if (first < second) return -1;
+          })
+
+          break;
+        case 'string': 
+          rows.sort((a, b) => {
+            let first = a.children[cellIndex].innerText;
+            let second = b.children[cellIndex].innerText;
+
+            let result = first > second;
+            return (result ? 1 : -1);
+
+          })
+          break;
+      }
+
+      // grid.tBodies[0].rows = rows;
+
+      rows.forEach(row => {
+        tbody.append(row);
+      });
+
+    });
+
+  </script>
+
+</body>
+</html>
