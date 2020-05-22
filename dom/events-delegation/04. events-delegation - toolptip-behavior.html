@@ -8,10 +8,6 @@
       height: 2000px;
       /* добавим body прокрутку, подсказка должна работать и с прокруткой */
     }
-
-    button {
-      position: static;
-    }
     
     .tooltip {
       /* немного стилизуем подсказку, можете использовать свои стили вместо этих */
@@ -49,6 +45,7 @@
 
         let tooltip = document.createElement('div');
         tooltip.classList.add('tooltip');
+        if (!button.dataset.tooltip) return;
         tooltip.innerHTML = button.dataset.tooltip;
         button.append(tooltip);
 
@@ -62,22 +59,13 @@
         } else {
           tooltipTop = button.offsetTop + buttonHeight + 5 + 'px';
         }
-        console.log(button.clientWidth / 2)
 
         let buttonMiddle = button.offsetLeft + (button.clientWidth / 2);
 
-        
-        console.log(button.offsetLeft);
-
-        console.log(buttonMiddle);
-
         tooltipLeft = buttonMiddle - (tooltip.offsetWidth / 2) + 'px';
-
-
         tooltip.style.top = tooltipTop;
 
-        console.log(tooltip.offsetLeft)
-        if (tooltip.offsetLeft > 0) {
+        if (Number.parseInt(tooltipLeft) > 0) {
           tooltip.style.left = tooltipLeft;
         } else {
           tooltip.style.left = 0;
@@ -92,6 +80,7 @@
         let tooltip = button.querySelector('.tooltip');
 
         tooltip.remove();
+        tooltip = null;
       }
     });
 
