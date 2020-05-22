@@ -11,7 +11,7 @@
     
     .tooltip {
       /* немного стилизуем подсказку, можете использовать свои стили вместо этих */
-      position: absolute;
+      position: fixed;
       z-index: 100;
       width: auto;
       padding: 10px 20px;
@@ -39,46 +39,34 @@
   
   <script>
     // ...ваш код...
+    let tooltip;
+
     document.addEventListener('mouseover', (e) => {
-      if (e.target.tagName.toLowerCase() == 'button') {
-        let button =  e.target;
+      let target =  e.target;
+      
+      if (!target.dataset.tooltip) return;              
+        
+      tooltip = document.createElement('div');
+      tooltip.className = 'tooltip';
+      tooltip.innerHTML = target.dataset.tooltip;
+      document.body.append(tooltip);
 
-        let tooltip = document.createElement('div');
-        tooltip.classList.add('tooltip');
-        if (!button.dataset.tooltip) return;
-        tooltip.innerHTML = button.dataset.tooltip;
-        button.append(tooltip);
+      let targetCoords = target.getBoundingClientRect();
 
-        let buttonHeight = button.offsetHeight;
-        let tooltipHeight = tooltip.offsetHeight;
-        let tooltipTop = 0;
-        let tooltipLeft = 0;
+      let left = targetCoords.left + (target.offsetWidth - tooltip.offsetWidth) / 2;
+      if (left < 0) left = 0;
 
-        if (button.offsetTop > pageYOffset + tooltipHeight + 5) {
-          tooltipTop = button.offsetTop - tooltipHeight - 5 + 'px';
-        } else {
-          tooltipTop = button.offsetTop + buttonHeight + 5 + 'px';
-        }
+      let top = targetCoords.top - tooltip.offsetHeight - 5;
+      if (top < 0 ) top = targetCoords.top + target.offsetHeight + 5;      
 
-        let buttonMiddle = button.offsetLeft + (button.clientWidth / 2);
+      tooltip.style.left = left + 'px';
+      tooltip.style.top = top + 'px';
 
-        tooltipLeft = buttonMiddle - (tooltip.offsetWidth / 2) + 'px';
-        tooltip.style.top = tooltipTop;
-
-        if (Number.parseInt(tooltipLeft) > 0) {
-          tooltip.style.left = tooltipLeft;
-        } else {
-          tooltip.style.left = 0;
-        }
-
-      }
     })
 
     document.addEventListener('mouseout', (e) => {
-      if (e.target.tagName.toLowerCase() == 'button') {
-        let button =  e.target;
-        let tooltip = button.querySelector('.tooltip');
 
+      if (tooltip) {
         tooltip.remove();
         tooltip = null;
       }
