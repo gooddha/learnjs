@@ -49,11 +49,9 @@
     ul.addEventListener('click', (event) => {
       let target = event.target;
 
-      if (!event.ctrlKey) {
-        for (let li of ul.querySelectorAll('li')) {
-          if (li.className == 'selected') {
-            li.className = '';
-          }
+      if (!(event.ctrlKey || event.metaKey)) {
+        for (let li of ul.querySelectorAll('.selected')) {
+          li.classList.remove('selected');
         }
       }
 
