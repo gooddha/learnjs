@@ -47,17 +47,15 @@
     // ...ваш код...
     let ul = document.querySelector('#ul');
     ul.addEventListener('click', (event) => {
-      let target = event.target;
-
+      if (event.target.tagName !== 'LI') return false 
+            
       if (!(event.ctrlKey || event.metaKey)) {
-        for (let li of ul.querySelectorAll('.selected')) {
-          li.classList.remove('selected');
+        for (let liSelected of ul.querySelectorAll('.selected')) {
+          liSelected.classList.remove('selected');
         }
       }
 
-      if (target.tagName == 'LI') {
-        event.target.classList.toggle('selected');
-      }
+      event.target.classList.toggle('selected');
     });
 
   </script>
