@@ -1,0 +1,114 @@
+<!-- 
+  https://learn.javascript.ru/mousemove-mouseover-mouseout-mouseenter-mouseleave#uluchshennaya-podskazka
+  Улучшенная подсказка
+  Напишите JavaScript код, который показывает подсказку над элементом с атрибутом data-tooltip. Значение атрибута должно становиться текстом подсказки.
+
+  Это похоже на задачу Поведение "подсказка", но здесь элементы с подсказками могут быть вложены друг в друга. Показываться должна подсказка на самом глубоко вложенном элементе.
+
+  Только одна подсказка может быть показана в любой момент времени.
+ -->
+
+ <!DOCTYPE HTML>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <style>
+    body {
+      height: 2000px;
+      /* подсказка должна работать и после прокрутки страницы */
+    }
+
+    .tooltip {
+      position: fixed;
+      z-index: 100;
+
+      padding: 10px 20px;
+
+      border: 1px solid #b3c9ce;
+      border-radius: 4px;
+      text-align: center;
+      font: italic 14px/1.3 sans-serif;
+      color: #333;
+      background: #fff;
+      box-shadow: 3px 3px 3px rgba(0, 0, 0, .3);
+    }
+
+    #house {
+      margin-top: 50px;
+      width: 400px;
+      border: 1px solid brown;
+    }
+
+    #roof {
+      width: 0;
+      height: 0;
+      border-left: 200px solid transparent;
+      border-right: 200px solid transparent;
+      border-bottom: 20px solid brown;
+      margin-top: -20px;
+    }
+
+    p {
+      text-align: justify;
+      margin: 10px 3px;
+    }
+  </style>
+</head>
+
+<body>
+
+
+  <div data-tooltip="Здесь домашний интерьер" id="house">
+    <div data-tooltip="Здесь крыша" id="roof"></div>
+
+    <p>Жили-были на свете три поросенка. Три брата. Все одинакового роста, кругленькие, розовые, с одинаковыми веселыми хвостиками.</p>
+
+    <p>Даже имена у них были похожи. Звали поросят: Ниф-Ниф, Нуф-Нуф и Наф-Наф. Все лето они кувыркались в зеленой траве, грелись на солнышке, нежились в лужах.</p>
+
+    <p>Но вот наступила осень. Солнце уже не так сильно припекало, серые облака тянулись над пожелтевшим лесом.</p>
+
+    <p>- Пора нам подумать о зиме, - сказал как-то Наф-Наф. <a href="https://ru.wikipedia.org/wiki/%D0%A2%D1%80%D0%B8_%D0%BF%D0%BE%D1%80%D0%BE%D1%81%D1%91%D0%BD%D0%BA%D0%B0" data-tooltip="Читать далее…">Наведи курсор на меня</a></p>
+
+  </div>
+
+  <script>
+    // ...ваш код...
+    let tooltip;
+
+    document.addEventListener('mouseover', (e) => {
+      let target =  e.target;
+
+      console.dir(e.target.dataset.tooltip || e.relatedTarget.dataset.tooltip);
+      
+      if (!target.dataset.tooltip) return;              
+        
+      tooltip = document.createElement('div');
+      tooltip.className = 'tooltip';
+      tooltip.innerHTML = target.dataset.tooltip || e.relatedTarget.dataset.tooltip;
+      document.body.append(tooltip);
+
+      let targetCoords = target.getBoundingClientRect();
+
+      let left = targetCoords.left + (target.offsetWidth - tooltip.offsetWidth) / 2;
+      if (left < 0) left = 0;
+
+      let top = targetCoords.top - tooltip.offsetHeight - 5;
+      if (top < 0 ) top = targetCoords.top + target.offsetHeight + 5;      
+
+      tooltip.style.left = left + 'px';
+      tooltip.style.top = top + 'px';
+
+    })
+
+    document.addEventListener('mouseout', (e) => {
+
+      if (tooltip) {
+        tooltip.remove();
+        tooltip = null;
+      }
+    });
+  </script>
+
+</body>
+</html>
