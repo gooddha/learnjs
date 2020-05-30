@@ -76,12 +76,13 @@
     // ...ваш код...
     let tooltip;
 
-    document.addEventListener('mouseover', (e) => {
-      let target =  e.target;
+    house.addEventListener('mouseover', (e) => {
+      let target =  e.target.closest('[data-tooltip]');
 
-      console.dir(e.target.dataset.tooltip || e.relatedTarget.dataset.tooltip);
       
-      if (!target.dataset.tooltip) return;              
+      // console.dir(e.target.dataset.tooltip || e.relatedTarget.dataset.tooltip);
+      
+      if (!target) return;              
         
       tooltip = document.createElement('div');
       tooltip.className = 'tooltip';
