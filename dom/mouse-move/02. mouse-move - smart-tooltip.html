@@ -1,0 +1,161 @@
+<!-- 
+  https://learn.javascript.ru/mousemove-mouseover-mouseout-mouseenter-mouseleave#umnaya-podskazka
+  "Умная" подсказка
+    Напишите функцию, которая показывает подсказку над элементом только в случае, когда пользователь передвигает мышь на него, но не через него.
+
+  Другими словами, если пользователь подвинул курсор на элементе и остановился – показывать подсказку. А если он просто быстро провёл курсором по элементу, то не надо ничего показывать. Кому понравится лишнее мелькание?
+
+  Технически, мы можем измерять скорость прохода курсора мыши над элементом, и если она низкая, то можно посчитать, что пользователь остановил курсор над элементом, и показать ему подсказку. А если скорость высокая, то тогда не показывать.
+
+  Создайте для этого универсальный объект new HoverIntent(options).
+
+  Его настройки options:
+    elem – отслеживаемый элемент.
+    over – функция, вызываемая, при заходе на элемент, считаем что заход – это когда курсор медленно двигается или остановился над элементом.
+    out – функция, вызываемая при уходе курсора с элемента (если был заход).
+
+  Если двигать курсор над «часами» быстро, то ничего не произойдёт, а если вы замедлите движение курсора над элементом или остановите его, то будет показана подсказка.
+
+  Обратите внимание: подсказка не должна пропадать (мигать), когда курсор переходит между дочерними элементами часов.
+ -->
+
+
+ <!doctype html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <title>Документ</title>
+  <style>
+    .hours {
+      color: red;
+    }
+
+    .minutes {
+      color: green;
+    }
+
+    .seconds {
+      color: blue;
+    }
+
+    .clock {
+      border: 1px dashed black;
+      padding: 5px;
+      display: inline-block;
+      background: yellow;
+      position: absolute;
+      left: 0;
+      top: 0;
+    }
+
+    #tooltip {
+      position: absolute;
+      background: #eee;
+      border: 1px brown solid;
+      padding: 3px;
+      /* top: 36px;      
+      left: 5px; */
+    }
+  </style>
+  
+</head>
+
+<body>
+
+  <div id="elem" class="clock">
+    <span class="hours">12</span> :
+    <span class="minutes">30</span> :
+    <span class="seconds">00</span>
+  </div>
+
+  <div id="tooltip" hidden>Подсказка</div>
+
+  <script>
+    class HoverIntent {
+
+      constructor({
+        sensitivity = 0.1, // скорость ниже 0.1px/ms значит "курсор на элементе"
+        interval = 100, // измеряем скорость каждые 100ms: определяем дистанцию между предыдущей и новой позицией.
+        elem,
+        over,
+        out
+      }) {
+        this.sensitivity = sensitivity;
+        this.interval = interval;
+        this.elem = elem;
+        this.over = over;
+        this.out = out;
+        this.x = 0;
+        this.y = 0;
+
+        // убедитесь, что "this" сохраняет своё значение для обработчиков.
+        this.onMouseMove = this.onMouseMove.bind(this);
+        this.onMouseOver = this.onMouseOver.bind(this);
+        this.onMouseOut = this.onMouseOut.bind(this);
+
+        // назначаем обработчики
+        elem.addEventListener("mouseover", this.onMouseOver);
+        elem.addEventListener("mouseout", this.onMouseOut);
+        elem.addEventListener("mousemove", this.onMouseMove);
+
+        // продолжите с этого места
+
+      }
+
+      onMouseOver(event) {
+        this.x = event.offsetX;
+        this.y = event.offsetY;
+
+        this.setInterval = setInterval(() => {
+          console.log(this.countSpeed(event.offsetX, event.offsetY));
+          if (this.countSpeed(event.offsetX, event.offsetY) < this.sensitivity) {
+            this.over();
+          }
+        }, this.interval);
+
+      }
+
+      onMouseOut(event) {
+        
+        console.log(event.relatedTarget)
+        // if (event.relatedTarget )
+        this.out();
+        this.destroy();
+      }
+
+      onMouseMove(event) {      
+        this.x = event.offsetX;
+        this.y = event.offsetY;
+      }
+
+      countSpeed(x, y) {
+        let horizontalSpeed = Math.abs(x - this.x) / this.interval;
+        let verticalSpeed = Math.abs(y - this.y) / this.interval;
+        return Math.max(horizontalSpeed, verticalSpeed);
+      }
+
+
+      destroy() {
+        /* ваш код для отключения функциональности и снятия всех обработчиков */
+        clearInterval(this.setInterval);
+      }
+
+    }
+
+    new HoverIntent({
+      elem,
+      over() {
+        tooltip.style.left = elem.getBoundingClientRect().left + 'px';
+        tooltip.style.top = elem.getBoundingClientRect().bottom + 5 + 'px';
+        tooltip.hidden = false
+      },
+      out() {
+        tooltip.hidden = true;
+      }
+    });
+
+  </script>
+
+</body>
+</html>

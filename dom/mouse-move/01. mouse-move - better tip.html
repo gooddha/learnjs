@@ -79,9 +79,6 @@
     house.addEventListener('mouseover', (e) => {
       let target =  e.target.closest('[data-tooltip]');
 
-      
-      // console.dir(e.target.dataset.tooltip || e.relatedTarget.dataset.tooltip);
-      
       if (!target) return;              
         
       tooltip = document.createElement('div');
