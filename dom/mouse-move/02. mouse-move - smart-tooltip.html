@@ -84,6 +84,7 @@
         this.sensitivity = sensitivity;
         this.interval = interval;
         this.elem = elem;
+        this.currentElem = null;
         this.over = over;
         this.out = out;
         this.x = 0;
@@ -93,6 +94,7 @@
         this.onMouseMove = this.onMouseMove.bind(this);
         this.onMouseOver = this.onMouseOver.bind(this);
         this.onMouseOut = this.onMouseOut.bind(this);
+        this.countSpeed = this.countSpeed.bind(this);
 
         // назначаем обработчики
         elem.addEventListener("mouseover", this.onMouseOver);
@@ -104,11 +106,20 @@
       }
 
       onMouseOver(event) {
+        
+        if (this.currentElem) return;
+        
+        let target = event.target.closest('#elem');
+        if (!target) return;
+
+        this.currentElem = target;
+
         this.x = event.offsetX;
         this.y = event.offsetY;
 
         this.setInterval = setInterval(() => {
-          console.log(this.countSpeed(event.offsetX, event.offsetY));
+          console.clear();
+        console.log(this.countSpeed(event.offsetX, event.offsetY));
           if (this.countSpeed(event.offsetX, event.offsetY) < this.sensitivity) {
             this.over();
           }
@@ -117,8 +128,17 @@
       }
 
       onMouseOut(event) {
+        if (!this.currentElem) return;
+
+        let relatedTarget = event.relatedTarget;
+        // console.log(this.currentElem, relatedTarget)
+
+        while (relatedTarget) {
+          if (relatedTarget == this.currentElem) return;
+
+          relatedTarget = relatedTarget.parentNode;
+        }
         
-        console.log(event.relatedTarget)
         // if (event.relatedTarget )
         this.out();
         this.destroy();
@@ -139,6 +159,7 @@
       destroy() {
         /* ваш код для отключения функциональности и снятия всех обработчиков */
         clearInterval(this.setInterval);
+        this.currentElem = null;
       }
 
     }
