@@ -1,0 +1,96 @@
+<!-- 
+  https://learn.javascript.ru/mouse-drag-and-drop#slayder
+  Слайдер  
+  Создайте слайдер:
+  Захватите мышкой синий бегунок и двигайте его.
+
+  Важные детали:
+  Слайдер должен нормально работать при резком движении мыши влево или вправо за пределы полосы. При этом бегунок должен останавливаться чётко в нужном конце полосы.
+  При нажатом бегунке мышь может выходить за пределы полосы слайдера, но слайдер пусть все равно работает (это удобно для пользователя).
+ -->
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <style>
+      .slider {
+        border-radius: 5px;
+        background: #e0e0e0;
+        background: linear-gradient(left top, #e0e0e0, #eeeeee);
+        width: 310px;
+        height: 15px;
+        margin: 5px;
+      }
+
+      .thumb {
+        width: 10px;
+        height: 25px;
+        border-radius: 3px;
+        position: relative;
+        left: 10px;
+        top: -5px;
+        background: blue;
+        cursor: pointer;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div id="slider" class="slider">
+      <div class="thumb"></div>
+    </div>
+
+    <script>
+      // ...ваш код...
+      let thumb = document.querySelector('.thumb');
+
+      thumb.addEventListener('mousedown', event => {
+        thumb.style.top = thumb.getBoundingClientRect().top + 'px';
+
+        let leftBound = slider.getBoundingClientRect().left;
+        let rightBound =
+          slider.getBoundingClientRect().right - thumb.offsetWidth / 2;
+
+        console.log(leftBound, rightBound);
+
+        let shiftX = event.clientX - thumb.getBoundingClientRect().left;
+        let shiftY = event.clientY - thumb.getBoundingClientRect().top;
+
+        thumb.style.position = 'absolute';
+        document.body.append(thumb);
+
+        moveAt(event.pageX);
+
+        function moveAt(pageX, pageY) {
+          let position = leftBound;
+
+          position = pageX - shiftX;
+
+          if (position <= leftBound) {
+            position = leftBound;
+          } else if (position >= rightBound) {
+            position = rightBound;
+          }
+
+          thumb.style.left = position + 'px';
+        }
+
+        function onMouseMove(event) {
+          moveAt(event.pageX);
+        }
+
+        document.addEventListener('mousemove', onMouseMove);
+
+        document.addEventListener('mouseup', event => {
+          document.removeEventListener('mousemove', onMouseMove);
+          // thumb.onmouseup = null;
+        });
+      });
+
+      thumb.ondragstart = function() {
+        return false;
+      };
+    </script>
+  </body>
+</html>
