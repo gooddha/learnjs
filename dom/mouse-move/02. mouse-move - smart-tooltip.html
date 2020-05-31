@@ -94,12 +94,12 @@
         this.onMouseMove = this.onMouseMove.bind(this);
         this.onMouseOver = this.onMouseOver.bind(this);
         this.onMouseOut = this.onMouseOut.bind(this);
-        this.countSpeed = this.countSpeed.bind(this);
+        this.trackSpeed = this.trackSpeed.bind(this);
 
         // назначаем обработчики
         elem.addEventListener("mouseover", this.onMouseOver);
         elem.addEventListener("mouseout", this.onMouseOut);
-        elem.addEventListener("mousemove", this.onMouseMove);
+        // elem.addEventListener("mousemove", this.onMouseMove);
 
         // продолжите с этого места
 
@@ -107,59 +107,76 @@
 
       onMouseOver(event) {
         
-        if (this.currentElem) return;
+        if (this.isOverElement) {
+          // Игнорируем событие над элементом,
+          // так как мы уже измеряем скорость
+          return;
+        }
+
+        this.isOverElement = true;
+
+        this.prevX = event.offsetX;
+        this.prevY = event.offsetY;
+        this.prevTime = Date.now();
+
+        elem.addEventListener('mousemove', this.onMouseMove);
+        this.checkSpeedInterval = setInterval(this.trackSpeed, this.interval);
+
         
-        let target = event.target.closest('#elem');
-        if (!target) return;
-
-        this.currentElem = target;
-
-        this.x = event.offsetX;
-        this.y = event.offsetY;
-
-        this.setInterval = setInterval(() => {
-          console.clear();
-        console.log(this.countSpeed(event.offsetX, event.offsetY));
-          if (this.countSpeed(event.offsetX, event.offsetY) < this.sensitivity) {
-            this.over();
-          }
-        }, this.interval);
 
       }
 
       onMouseOut(event) {
-        if (!this.currentElem) return;
-
-        let relatedTarget = event.relatedTarget;
-        // console.log(this.currentElem, relatedTarget)
-
-        while (relatedTarget) {
-          if (relatedTarget == this.currentElem) return;
-
-          relatedTarget = relatedTarget.parentNode;
+        // если ушли с элемента
+        if (!event.relatedTarget || !elem.contains(event.relatedTarget)) {
+          this.isOverElement = false;
+          this.elem.removeEventListener('mousemove', this.onMouseMove);
+          clearInterval(this.checkSpeedInterval);
+          if (this.isHover) {
+            // если была остановка движения на элементе
+            this.out.call(this.elem, event);
+            this.isHover = false;
+          }
         }
-        
-        // if (event.relatedTarget )
-        this.out();
-        this.destroy();
       }
 
-      onMouseMove(event) {      
-        this.x = event.offsetX;
-        this.y = event.offsetY;
+      onMouseMove(event) {
+        this.lastX = event.offsetX;
+        this.lastY = event.offsetY;
+        this.lastTime = Date.now();
       }
 
-      countSpeed(x, y) {
-        let horizontalSpeed = Math.abs(x - this.x) / this.interval;
-        let verticalSpeed = Math.abs(y - this.y) / this.interval;
-        return Math.max(horizontalSpeed, verticalSpeed);
+      trackSpeed() {
+
+        let speed;
+
+        if (!this.lastTime || this.lastTime == this.prevTime) {
+          // курсор не двигался
+          speed = 0;
+        } else {
+          speed = Math.sqrt(
+            Math.pow(this.prevX - this.lastX, 2) +
+            Math.pow(this.prevY - this.lastY, 2)
+          ) / (this.lastTime - this.prevTime);
+        }
+
+        if (speed < this.sensitivity) {
+          clearInterval(this.checkSpeedInterval);
+          this.isHover = true;
+          this.over.call(this.elem, event);
+        } else {
+          // скорость высокая, запоминаем новые координаты
+          this.prevX = this.lastX;
+          this.prevY = this.lastY;
+          this.prevTime = this.lastTime;
+        }
       }
 
 
       destroy() {
-        /* ваш код для отключения функциональности и снятия всех обработчиков */
-        clearInterval(this.setInterval);
-        this.currentElem = null;
+        elem.removeEventListener('mousemove', this.onMouseMove);
+        elem.removeEventListener('mouseover', this.onMouseOver);
+        elem.removeEventListener('mouseout', this.onMouseOut);
       }
 
     }
