@@ -35,7 +35,7 @@
     document.querySelector('#contents').addEventListener('click', (e) => {
       let target = e.target;
 
-      if (target.tagName = 'A') {
+      if (target.tagName == 'A') {
         if (!confirm('Вы действительно хотите перейти по ссылке ' + target.href)) {
           e.preventDefault();
         };
