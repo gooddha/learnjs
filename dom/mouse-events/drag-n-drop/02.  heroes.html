@@ -1,7 +1,6 @@
 <!-- 
   https://learn.javascript.ru/mouse-drag-and-drop#rasstavit-supergeroev-po-polyu
   Расставить супергероев по полю
-  важность: 5
   В этой задаче вы можете проверить своё понимание сразу нескольких аспектов Drag’n’Drop и DOM.
 
   Сделайте так, чтобы элементы с классом draggable можно было переносить мышкой. Как мяч в этой главе.
@@ -102,9 +101,59 @@
 
   <script>
     // ваш код...
-    
+    function onMousedown(event) {
+      document.ondragstart = function() {
+        return false;
+      }
+
+      if (!(event.target.classList.contains('draggable'))) return;
+      
+      let draggable = event.target;
+
+      let shiftX = event.clientX - draggable.getBoundingClientRect().left;
+      let shiftY = event.clientY - draggable.getBoundingClientRect().top;
 
 
+      let coords = getCoords(draggable);
+
+      draggable.style.position = 'absolute';
+      draggable.style.top = coords.top + 'px';
+      draggable.style.left = coords.left + 'px';
+
+      document.addEventListener('mousemove', onMouseMove)
+
+      function onMouseMove(event) {
+        moveAt(event.pageX, event.pageY);
+      }
+
+      document.addEventListener('mouseup', (event) => {
+        document.removeEventListener('mousemove', onMouseMove)
+      })
+
+      function moveAt(pageX, pageY) {
+        
+        if (draggable.getBoundingClientRect().top < 0){
+          draggable.style.top = pageYOffset  + 'px';  
+          scrollBy(0, pageY);
+        } else  {
+          draggable.style.top = pageY - shiftY  + 'px';
+        }
+
+        draggable.style.left = pageX - shiftX + 'px';
+
+      }
+      
+      function getCoords(elem) {
+        let box = elem.getBoundingClientRect();
+        
+        return {
+          top: box.top + pageYOffset,
+          left: box.left + pageXOffset
+        }
+      }
+    }
+
+    document.addEventListener('mousedown', onMousedown);
   </script>
 </body>
 
