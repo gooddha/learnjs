@@ -116,7 +116,7 @@
 
     <script>
       // ваш код...
-      let isDragging = false;
+      let docBottom = document.documentElement.getBoundingClientRect().bottom;
 
       document.addEventListener('mousedown', event => {
         let draggable = event.target.closest('.draggable');
@@ -124,66 +124,26 @@
         if (!draggable) return;
 
         event.preventDefault();
-
         document.ondragstart = function() {
           return false;
         };
 
-        let coords, shiftX, shiftY;
+        let shiftX = event.clientX - draggable.getBoundingClientRect().left;
+        let shiftY = event.clientY - draggable.getBoundingClientRect().top;
 
-        startDrag(draggable, event.clientX, event.clientY);
+        draggable.style.position = 'fixed';
 
-        function onMouseUp(event) {
-          finishDrag();
-        }
-
-        function onMouseMove(event) {
-          moveAt(event.clientX, event.clientY);
-        }
-
-        function startDrag(element, clientX, clientY) {
-          if (isDragging) {
-            return;
-          }
-
-          isDragging = true;
-
-          document.addEventListener('mousemove', onMouseMove);
-          document.addEventListener('mouseup', onMouseUp);
-
-          shiftX = clientX - element.getBoundingClientRect().left;
-          shiftY = clientY - element.getBoundingClientRect().top;
-
-          element.style.position = 'fixed';
-
-          moveAt(clientX, clientY);
-        }
-
-        function finishDrag() {
-          if (!isDragging) {
-            return;
-          }
-
-          isDragging = false;
-
-          draggable.style.top =
-            parseInt(draggable.style.top) + pageYOffset + 'px';
-          draggable.style.position = 'absolute';
-
-          document.removeEventListener('mousemove', onMouseMove);
-          document.removeEventListener('mouseup', onMouseUp);
-        }
+        moveAt(event.clientX, event.clientY);
 
         function moveAt(clientX, clientY) {
           let newX = clientX - shiftX;
           let newY = clientY - shiftY;
 
+          console.log(newX, newY);
+
           let newBottom = newY + draggable.offsetHeight;
 
           if (newBottom > document.documentElement.clientHeight) {
-            let docBottom = document.documentElement.getBoundingClientRect()
-              .bottom;
-
             let scrollY = Math.min(docBottom - newBottom, 10);
 
             if (scrollY < 0) {
@@ -217,6 +177,22 @@
 
           draggable.style.left = newX + 'px';
           draggable.style.top = newY + 'px';
+        }
+
+        document.addEventListener('mousemove', onMouseMove);
+        document.addEventListener('mouseup', onMouseUp);
+
+        function onMouseMove(event) {
+          moveAt(event.clientX, event.clientY);
+        }
+
+        function onMouseUp(event) {
+          draggable.style.top =
+            parseInt(draggable.style.top) + pageYOffset + 'px';
+          draggable.style.position = 'absolute';
+
+          document.removeEventListener('mousemove', onMouseMove);
+          document.removeEventListener('mouseup', onMouseUp);
         }
       });
     </script>
