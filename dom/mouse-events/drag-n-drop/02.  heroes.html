@@ -117,54 +117,61 @@
 
   <script>
     // ваш код...
-    let docBottom = document.documentElement.getBoundingClientRect().bottom;
-
     document.addEventListener('mousedown', event => {
-      let draggable = event.target.closest('.draggable');
+      const draggableElement = event.target.closest('.draggable');
 
-      if (!draggable) return;
+      if (!draggableElement) return;
+
+      const draggableElementHeight = draggableElement.offsetHeight;
+      const draggableElementWidth = draggableElement.offsetWidth;
+
+      const windowHeight = document.documentElement.clientHeight;
+      const windowWidth = document.documentElement.clientWidth;
+
+      const scrollAmount = 5;
 
       event.preventDefault();
       document.ondragstart = function () {
         return false;
       };
 
-      let shiftX = event.clientX - draggable.getBoundingClientRect().left;
-      let shiftY = event.clientY - draggable.getBoundingClientRect().top;
+      const clickShiftX = event.clientX - draggableElement.getBoundingClientRect().left;
+      const clickShiftY = event.clientY - draggableElement.getBoundingClientRect().top;
 
-      draggable.style.position = 'fixed';
+      draggableElement.style.position = 'fixed';
 
       moveAt(event.clientX, event.clientY);
 
-      function moveAt(clientX, clientY) {
-        let newX = clientX - shiftX;
-        let newY = clientY - shiftY;
+      function moveAt(eventX, eventY) {
 
-        let newBottom = newY + draggable.offsetHeight;
+        let newLeft = eventX - clickShiftX;
+        let newTop = eventY - clickShiftY;
+        let newBottom = newTop + draggableElementHeight;
 
-        // check bottom border
-        if (newBottom > document.documentElement.clientHeight) {
-          window.scrollBy(0, 5);
-          newY = Math.min(newY, document.documentElement.clientHeight - draggable.offsetHeight);
+
+        // check window bottom border
+        if (newBottom > windowHeight) {
+          window.scrollBy(0, scrollAmount);
+          newTop = Math.min(newTop, windowHeight - draggableElementHeight);
         }
 
-        // check top border
-        if (newY < 0) {
-          window.scrollBy(0, -5);
-          newY = Math.max(newY, 0);
+        // check window top border
+        if (newTop < 0) {
+          window.scrollBy(0, -scrollAmount);
+          newTop = Math.max(newTop, 0);
         }
 
-        // check left window border
-        if (newX < 0) newX = 0;
+        // check window left border
+        if (newLeft < 0) newLeft = 0;
 
-        // check right window border
-        if (newX > document.documentElement.clientWidth - draggable.offsetWidth) {
-          newX = document.documentElement.clientWidth - draggable.offsetWidth;
+        // check window right border
+        if (newLeft > windowWidth - draggableElementWidth) {
+          newLeft = windowWidth - draggableElementWidth;
         }
 
-        // set draggable element position
-        draggable.style.left = newX + 'px';
-        draggable.style.top = newY + 'px';
+        // set draggableElement element position
+        draggableElement.style.left = newLeft + 'px';
+        draggableElement.style.top = newTop + 'px';
       }
 
       document.addEventListener('mousemove', onMouseMove);
@@ -175,8 +182,8 @@
       }
 
       function onMouseUp(event) {
-        draggable.style.top = parseInt(draggable.style.top) + pageYOffset + 'px';
-        draggable.style.position = 'absolute';
+        draggableElement.style.top = parseInt(draggableElement.style.top) + pageYOffset + 'px';
+        draggableElement.style.position = 'absolute';
 
         document.removeEventListener('mousemove', onMouseMove);
         document.removeEventListener('mouseup', onMouseUp);
