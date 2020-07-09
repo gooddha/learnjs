@@ -32,16 +32,18 @@
   </fieldset>
 
   <script>
-    document.querySelector('#contents').addEventListener('click', (e) => {
-      let target = e.target;
+    let contents = document.querySelector('#contents');
+    contents.addEventListener('click', (e) => {
+      let anchor = e.target.closest('a');
 
-      if (target.tagName == 'A') {
-        if (!confirm('Вы действительно хотите перейти по ссылке ' + target.href)) {
+      if (anchor && contents.contains(anchor)) {
+        if (!confirm('Вы действительно хотите перейти по ссылке ' + anchor.href)) {
           e.preventDefault();
-        };
+        }; 
       }
 
-    }, true)
+    })
+
 
   </script>
 
