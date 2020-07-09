@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+<body>
+
+  <!-- 
+    https://learn.javascript.ru/keyboard-events#otsledit-odnovremennoe-nazhatie
+    Отследить одновременное нажатие
+    важность: 5
+    Создайте функцию runOnKeys(func, code1, code2, ... code_n), которая запускает func при одновременном нажатии клавиш с кодами code1, code2, …, code_n.
+
+    Например, код ниже выведет alert при одновременном нажатии клавиш "Q" и "W" (в любом регистре, в любой раскладке)
+   -->
+  <script>
+
+    function runOnKeys(func, ...codes) {
+      let pressedKeys = new Set();
+      let allPressed = false;
+
+      document.addEventListener('keydown', e => {
+        pressedKeys.add(e.code);
+
+        for (let code of codes) {
+          if (pressedKeys.has(code)) {
+            allPressed = true;
+          } else {
+            allPressed = false;
+          }            
+        }
+
+        if (allPressed) {
+          pressedKeys.clear();
+          func();
+        }
+      });
+
+      document.addEventListener('keyup', e => {
+        pressedKeys.delete(e.code);
+      })
+
+    }
+  
+   runOnKeys(
+    () => alert("Привет!"),
+    "KeyQ",
+    "KeyW"
+   );
+  </script>
+
+</body>
+</html>
