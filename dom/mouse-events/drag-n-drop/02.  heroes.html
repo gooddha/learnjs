@@ -118,6 +118,9 @@
   <script>
     // ваш код...
     document.addEventListener('mousedown', event => {
+
+      if (event.which !== 1) return;
+
       const draggableElement = event.target.closest('.draggable');
 
       if (!draggableElement) return;
@@ -182,6 +185,7 @@
       }
 
       function onMouseUp(event) {
+        if (event.which !== 1) return;
         draggableElement.style.top = parseInt(draggableElement.style.top) + pageYOffset + 'px';
         draggableElement.style.position = 'absolute';
 
