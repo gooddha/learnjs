@@ -1,0 +1,38 @@
+<!-- 
+  https://learn.javascript.ru/form-elements#dobavte-punkt-k-vypadayuschemu-spisku
+  Добавьте пункт к выпадающему списку
+  
+  Выведите значение и текст выбранного пункта.
+  Добавьте пункт: <option value="classic">Классика</option>.
+  Сделайте его выбранным.
+ -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+<body>
+
+  <select id="genres">
+    <option value="rock">Рок</option>
+    <option value="blues" selected>Блюз</option>
+  </select>
+
+  <script>
+    let selected = genres[genres.selectedIndex];
+    console.log(selected.value, selected.innerHTML);
+
+    let newOption = new Option('Классика', 'classic');
+    genres.append(newOption);
+
+    newOption.selected = true;
+
+
+  </script>
+  
+</body>
+</html>
