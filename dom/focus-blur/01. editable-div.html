@@ -1,0 +1,93 @@
+<!-- 
+  https://learn.javascript.ru/focus-blur#redaktiruemyy-div 
+  Редактируемый div
+  важность: 5
+  Создайте <div>, который превращается в <textarea>, если на него кликнуть.
+  <textarea> позволяет редактировать HTML в элементе <div>.
+  Когда пользователь нажимает Enter или переводит фокус, <textarea> превращается обратно в <div>, и его содержимое становится HTML-кодом в <div>.
+-->
+
+<!DOCTYPE HTML>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <style>
+    .view,
+    .edit {
+      height: 150px;
+      width: 400px;
+      font-family: sans-serif;
+      font-size: 14px;
+      display: block;
+    }
+
+    .view {
+      /* padding + border = 3px */
+      padding: 2px;
+      border: 1px solid black;
+    }
+
+    .edit {
+      /* замена внутреннего отступа рамкой (по-прежнему 3px, и содержимое не смещается) */
+      border: 3px solid blue;
+      padding: 0px;
+    }
+
+    .edit:focus {
+      /* удаление обводки фокуса в Safari */
+      outline: none;
+    }
+  </style>
+</head>
+
+<body>
+
+  <ul>
+    <li>Кликните на div ниже, чтобы отредактировать текст.</li>
+    <li>Нажатие на Enter или потеря фокуса с ввода сохранят содержимое.</li>
+  </ul>
+
+  HTML-код разрешён.
+
+  <div id="view" class="view">Текст</div>
+
+  <script>
+    // ...ваш код...
+    // Заметьте: <textarea> должен иметь class="edit"
+    // my.css содержит стиль, чтобы <textarea> и <div> были одного размера
+
+    let textArea = document.createElement('textarea');
+    textArea.style.display = 'none';
+    document.body.append(textArea);
+
+
+    view.addEventListener('click', (e) => {
+      textArea.value = view.innerHTML;
+      textArea.className = 'edit';
+      textArea.style.display = 'block';
+      textArea.focus();
+
+      view.style.display = 'none';
+    });
+
+    textArea.addEventListener('blur', onblur);
+    textArea.addEventListener('keydown', (e) => {
+
+      if (e.key == 'Enter') {
+        e.preventDefault();
+        onblur();
+      }
+    })
+
+    function onblur(e) {
+      view.innerHTML = textArea.value;
+      textArea.style.display = 'none';
+      view.style.display = 'block';
+    }
+
+  </script>
+
+</body>
+
+</html>
