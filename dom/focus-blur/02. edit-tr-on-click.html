@@ -10,148 +10,221 @@
   Таблица может иметь множество ячеек. Используйте делегирование событий.
  -->
 
- <!DOCTYPE HTML>
+<!DOCTYPE HTML>
 <html>
 
-  <head>
-    <meta charset="utf-8">
+<head>
+  <meta charset="utf-8">
 
-    <style>
-      /* общие стили для таблицы, изменять их не нужно */
+  <style>
+    /* общие стили для таблицы, изменять их не нужно */
 
-      th {
-        text-align: center;
-        font-weight: bold;
-      }
+    th {
+      text-align: center;
+      font-weight: bold;
+    }
 
-      td {
-        width: 150px;
-        white-space: nowrap;
-        text-align: center;
-        vertical-align: middle;
-        padding: 10px;
-      }
+    td {
+      width: 150px;
+      white-space: nowrap;
+      text-align: center;
+      vertical-align: middle;
+      padding: 10px;
+    }
 
-      .nw {
-        background-color: #999;
-      }
+    .nw {
+      background-color: #999;
+    }
 
-      .n {
-        background-color: #03f;
-        color: #fff;
-      }
+    .n {
+      background-color: #03f;
+      color: #fff;
+    }
 
-      .ne {
-        background-color: #ff6;
-      }
+    .ne {
+      background-color: #ff6;
+    }
 
-      .w {
-        background-color: #ff0;
-      }
+    .w {
+      background-color: #ff0;
+    }
 
-      .c {
-        background-color: #60c;
-        color: #fff;
-      }
+    .c {
+      background-color: #60c;
+      color: #fff;
+    }
 
-      .e {
-        background-color: #09f;
-        color: #fff;
-      }
+    .e {
+      background-color: #09f;
+      color: #fff;
+    }
 
-      .sw {
-        background-color: #963;
-        color: #fff;
-      }
+    .sw {
+      background-color: #963;
+      color: #fff;
+    }
 
-      .s {
-        background-color: #f60;
-        color: #fff;
-      }
+    .s {
+      background-color: #f60;
+      color: #fff;
+    }
 
-      .se {
-        background-color: #0c3;
-        color: #fff;
-      }
+    .se {
+      background-color: #0c3;
+      color: #fff;
+    }
 
-      /* ваши стили */
+    /* ваши стили */
+    td {
+      position: relative;
+    }
 
-    </style>
-  </head>
+    .edit {
+      position: absolute;
+      border: none;
+      top: 0;
+      left: 0;
+      width: 98%;
+      height: 98%;
+      resize: none;
+    }
 
-  <body>
-    <link rel="stylesheet" href="bagua.css">
-    <link rel="stylesheet" href="my.css">
+    .buttons-container {
+      position: absolute;
+      left: 0;
+      top: 100%;
+      z-index: 10;
+    }
+  </style>
+</head>
+
+<body>
 
 
-    <p>Кликните на ячейку таблицы, чтобы отредактировать её. Нажмите ОК или ОТМЕНА, когда закончите.</p>
+  <p>Кликните на ячейку таблицы, чтобы отредактировать её. Нажмите ОК или ОТМЕНА, когда закончите.</p>
 
-    <table id="bagua-table">
-      <tr>
-        <th colspan="3">Квадрат <em>Bagua</em>: Направление, Элемент, Цвет, Значение</th>
-      </tr>
-      <tr>
-        <td class="nw"><strong>Северо-Запад</strong>
-          <br>Металл
-          <br>Серебро
-          <br>Старейшины
-        </td>
-        <td class="n"><strong>Север</strong>
-          <br>Вода
-          <br>Синий
-          <br>Перемены
-        </td>
-        <td class="ne"><strong>Северо-Восток</strong>
-          <br>Земля
-          <br>Жёлтый
-          <br>Направление
-        </td>
-      </tr>
-      <tr>
-        <td class="w"><strong>Запад</strong>
-          <br>Металл
-          <br>Золото
-          <br>Молодость
-        </td>
-        <td class="c"><strong>Центр</strong>
-          <br>Всё
-          <br>Пурпурный
-          <br>Гармония
-        </td>
-        <td class="e"><strong>Восток</strong>
-          <br>Дерево
-          <br>Синий
-          <br>Будущее
-        </td>
-      </tr>
-      <tr>
-        <td class="sw"><strong>Юго-Запад</strong>
-          <br>Земля
-          <br>Коричневый
-          <br>Спокойствие
-        </td>
-        <td class="s"><strong>Юг</strong>
-          <br>Огонь
-          <br>Оранжевый
-          <br>Слава
-        </td>
-        <td class="se"><strong>Юго-Восток</strong>
-          <br>Дерево
-          <br>Зеленый
-          <br>Роман
-        </td>
-      </tr>
+  <table id="bagua-table">
+    <tr>
+      <th colspan="3">Квадрат <em>Bagua</em>: Направление, Элемент, Цвет, Значение</th>
+    </tr>
+    <tr>
+      <td class="nw"><strong>Северо-Запад</strong>
+        <br>Металл
+        <br>Серебро
+        <br>Старейшины
+      </td>
+      <td class="n"><strong>Север</strong>
+        <br>Вода
+        <br>Синий
+        <br>Перемены
+      </td>
+      <td class="ne"><strong>Северо-Восток</strong>
+        <br>Земля
+        <br>Жёлтый
+        <br>Направление
+      </td>
+    </tr>
+    <tr>
+      <td class="w"><strong>Запад</strong>
+        <br>Металл
+        <br>Золото
+        <br>Молодость
+      </td>
+      <td class="c"><strong>Центр</strong>
+        <br>Всё
+        <br>Пурпурный
+        <br>Гармония
+      </td>
+      <td class="e"><strong>Восток</strong>
+        <br>Дерево
+        <br>Синий
+        <br>Будущее
+      </td>
+    </tr>
+    <tr>
+      <td class="sw"><strong>Юго-Запад</strong>
+        <br>Земля
+        <br>Коричневый
+        <br>Спокойствие
+      </td>
+      <td class="s"><strong>Юг</strong>
+        <br>Огонь
+        <br>Оранжевый
+        <br>Слава
+      </td>
+      <td class="se"><strong>Юго-Восток</strong>
+        <br>Дерево
+        <br>Зеленый
+        <br>Роман
+      </td>
+    </tr>
 
   </table>
 
 
-    <script>
-      let table = document.getElementById('bagua-table');
-      // ваш код
+  <script>
+    let table = document.getElementById('bagua-table');
+
+    // ваш код
+    let textArea = null;
+
+    let isEdit = false;
+
+    table.addEventListener('click', (e) => {
+      let td = e.target.closest('td');
+      if (!td || isEdit) return;
+
+      editStart(td);
+    });
+
+    function editStart(td) {
+
+      isEdit = true;
+
+      textArea = document.createElement('textarea');
+      textArea.className = 'edit';
+      textArea.value = td.innerHTML;
 
 
-    </script>
+      let buttonsContainer = document.createElement('div');
+      buttonsContainer.className = 'buttons-container';
 
-  </body>
+      let okButton = document.createElement('button');
+      let cancelButton = document.createElement('button');
+
+      okButton.innerText = 'OK';
+      cancelButton.innerText = 'CANCEL';
+
+      buttonsContainer.appendChild(okButton);
+      buttonsContainer.appendChild(cancelButton);
+
+      td.appendChild(textArea);
+      td.appendChild(buttonsContainer);
+      textArea.focus();
+
+      okButton.addEventListener('click', e => {
+        td.innerHTML = textArea.value;
+        editStop();
+      });
+
+      cancelButton.addEventListener('click', e => {
+        editStop();
+      })
+
+      function editStop(td) {
+        textArea.remove();
+        textArea = null;
+
+        buttonsContainer.remove();
+        buttonsContainer = null;
+        isEdit = false;
+      }
+    }
+
+
+
+  </script>
+
+</body>
 
 </html>
