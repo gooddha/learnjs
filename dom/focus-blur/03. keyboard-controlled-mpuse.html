@@ -1,0 +1,50 @@
+<!-- 
+  https://learn.javascript.ru/focus-blur#mysh-upravlyaemaya-klaviaturoy
+  Мышь, управляемая клавиатурой
+  Установите фокус на мышь. Затем используйте клавиши со стрелками, чтобы её двигать:
+
+  P.S. Не добавляйте обработчики никуда, кроме элемента #mouse. P.P.S. Не изменяйте HTML/CSS, подход должен быть общим и работать с любым элементом.
+ -->
+
+<!DOCTYPE HTML>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <style>
+    #mouse {
+      display: inline-block;
+      cursor: pointer;
+      margin: 0;
+    }
+
+    #mouse:focus {
+      outline: 1px dashed black;
+    }
+  </style>
+</head>
+
+<body>
+
+  <p>Кликните по "изображению" мыши и перемещайте её с помощью клавиш со стрелками.</p>
+
+  <pre id="mouse">
+      _   _
+      (q\_/p)
+      /. .\
+      =\_t_/=   __
+      /   \   (
+      ((   ))   )
+      /\) (/\  /
+      \  Y  /-'
+      nn^nn
+    </pre>
+
+
+  <script>
+      // ...ваш код...
+  </script>
+
+</body>
+
+</html>
