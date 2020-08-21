@@ -29,20 +29,58 @@
   <p>Кликните по "изображению" мыши и перемещайте её с помощью клавиш со стрелками.</p>
 
   <pre id="mouse">
-      _   _
-      (q\_/p)
-      /. .\
-      =\_t_/=   __
-      /   \   (
-      ((   ))   )
-      /\) (/\  /
-      \  Y  /-'
-      nn^nn
-    </pre>
+    _   _
+    (q\_/p)
+    /. .\
+    =\_t_/=   __
+    /   \   (
+    ((   ))   )
+    /\) (/\  /
+    \  Y  /-'
+    nn^nn
+  </pre>
 
 
   <script>
-      // ...ваш код...
+    // ...ваш код...
+    mouse.tabIndex = '-1'
+    mouse.style.transition = 'top 0.4s ease, left 0.4s ease'
+    mouse.onclick = e => {
+      mouse.focus();
+    }
+
+    mouse.onfocus = e => {
+      let coords = mouse.getBoundingClientRect();
+      mouse.style.position = 'fixed';
+      mouse.style.top = coords.top + 'px';
+      mouse.style.left = coords.left + 'px';
+      mouse.addEventListener('keydown', onKeyDown);
+    }
+
+    mouse.onblur = e => {
+      mouse.removeEventListener('keydown', onKeyDown);
+    }
+
+    function onKeyDown(e) {
+      let coords = mouse.getBoundingClientRect();
+      switch (e.key) {
+        case 'ArrowUp':
+          mouse.style.top = (coords.top - coords.height) + 'px';
+          break;
+        case 'ArrowDown':
+          mouse.style.top = (coords.top + coords.height) + 'px';
+          break;
+        case 'ArrowLeft':
+          mouse.style.left = (coords.left - coords.width) + 'px';
+          break;
+        case 'ArrowRight':
+          mouse.style.left = (coords.left + coords.width) + 'px';
+          break;
+        default:
+          break;
+      }
+    }
+
   </script>
 
 </body>
