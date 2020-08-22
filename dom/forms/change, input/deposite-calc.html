@@ -93,9 +93,30 @@
 
   <script>
 
-    let form = document.forms.calculator;
+    doCalc();
+    
+    for (elem of calculator.elements) {
+      elem.oninput = doCalc;
+    }
 
-     // ваш код
+    function doCalc() {
+      let initial = calculator.elements.money.value;
+      let years = calculator.elements.months.value / 12;
+      let interest = calculator.elements.interest.value / 100;
+
+      let result = Math.round(initial * (1 + interest * years));
+
+      let moneyBefore = document.getElementById('money-before');
+      moneyBefore.innerHTML = initial;
+
+      let moneyAfter = document.getElementById('money-after');
+      moneyAfter.innerHTML = result;
+
+      let heightAfter = document.getElementById('height-after');
+      heightAfter.style.height = result / initial * 100 + 'px';     
+      
+    }
+
   </script>
 
 
