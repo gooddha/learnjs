@@ -30,20 +30,55 @@
 <head>
   <meta charset="utf-8">
   <link rel="stylesheet" href="style.css">
+  <title>Модальное окно</title>
 </head>
 
 <body>
 
+  <h1>Кликните на кнопку</h1>
+
+  <button id="show-modal-button">Кликните, чтобы увидеть форму</button>
+  
 
   <div id="prompt-form-container">
     <form id="prompt-form">
-      <div id="prompt-message">Введите что-нибудь...
-        <br>Пожалуйста..</div>
+      <div id="prompt-message"></div>
       <input name="text" type="text">
       <input type="submit" value="Ok">
       <input type="button" name="cancel" value="Отмена">
     </form>
   </div>
+
+  <script>
+    const button = document.querySelector('#show-modal-button');
+    const modalForm = document.querySelector('#prompt-form-container');
+
+    button.onclick = e => {
+      showPrompt("Введите что-нибудь<br>...умное :)", function(value) {
+        alert(value);
+      });
+    }
+
+    function showPrompt(html, callback) {
+      modalForm.querySelector('#prompt-message').innerHTML = html;
+
+
+      const okButton = modalForm.querySelector('input[type="submit"]');
+      const cancelButton = modalForm.querySelector('input[name="cancel"]');
+
+      okButton.addEventListener('click', e => {
+        e.preventDefault();
+        modalForm.style.display = 'none';
+        callback(modalForm.querySelector('#prompt-form').elements.text.value);
+      });
+
+      cancelButton.addEventListener('click', e => {
+        console.log(cancelButton);
+      })
+
+      modalForm.style.display = 'block';
+    }
+  </script>
 
 
 </body>
