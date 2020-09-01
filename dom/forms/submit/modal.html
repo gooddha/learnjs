@@ -59,24 +59,43 @@
       });
     }
 
+
+
     function showPrompt(html, callback) {
+      const text = document.forms['prompt-form'].elements.text;      
+      const cancelButton = modalForm.querySelector('input[name="cancel"]');
       modalForm.querySelector('#prompt-message').innerHTML = html;
 
+      document.forms['prompt-form'].addEventListener('submit', onSubmit);
+      cancelButton.addEventListener('click', onCancel);
+      document.body.addEventListener('keydown', onEscape);
+      
 
-      const okButton = modalForm.querySelector('input[type="submit"]');
-      const cancelButton = modalForm.querySelector('input[name="cancel"]');
-
-      okButton.addEventListener('click', e => {
+      function onSubmit(e) {
         e.preventDefault();
+        callback(text.value);
+        text.value = '';
         modalForm.style.display = 'none';
-        callback(modalForm.querySelector('#prompt-form').elements.text.value);
-      });
+        document.forms['prompt-form'].removeEventListener('submit', onSubmit);
+      }
 
-      cancelButton.addEventListener('click', e => {
-        console.log(cancelButton);
-      })
+      function onCancel(e) {
+        callback(null);
+        text.value = '';
+        modalForm.style.display = 'none';
+        cancelButton.removeEventListener('click', onCancel);
+        document.body.removeEventListener('keydown', onEscape);
+      }
+
+      function onEscape(e) {
+        if (e.key !== 'Escape') return;
+        onCancel();        
+        
+      }
 
       modalForm.style.display = 'block';
+      modalForm.style.backgroundColor = '#2228'
+      text.focus();
     }
   </script>
 
