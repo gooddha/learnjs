@@ -51,7 +51,7 @@
 
   <script>
     const button = document.querySelector('#show-modal-button');
-    const modalForm = document.querySelector('#prompt-form-container');
+    const formContainer = document.querySelector('#prompt-form-container');
 
     button.onclick = e => {
       showPrompt("Введите что-нибудь<br>...умное :)", function(value) {
@@ -59,30 +59,43 @@
       });
     }
 
+    
+
 
 
     function showPrompt(html, callback) {
-      const text = document.forms['prompt-form'].elements.text;      
-      const cancelButton = modalForm.querySelector('input[name="cancel"]');
-      modalForm.querySelector('#prompt-message').innerHTML = html;
+      const form = document.forms['prompt-form'];
+      const text = form.elements.text;      
+      const cancelButton = formContainer.querySelector('input[name="cancel"]');
+      formContainer.querySelector('#prompt-message').innerHTML = html;
 
-      document.forms['prompt-form'].addEventListener('submit', onSubmit);
+      for (let i = 0; i < form.elements.length; i++) {
+        form.elements[i].tabIndex = i+1;
+      }
+
+      form.addEventListener('submit', onSubmit);
       cancelButton.addEventListener('click', onCancel);
       document.body.addEventListener('keydown', onEscape);
-      
+
+      document.onkeyup = e => {
+        if (e.key != 'Tab') return;
+        if (document.activeElement.tabIndex < 1) {
+          text.focus();
+        }     
+      }
 
       function onSubmit(e) {
         e.preventDefault();
         callback(text.value);
         text.value = '';
-        modalForm.style.display = 'none';
-        document.forms['prompt-form'].removeEventListener('submit', onSubmit);
+        formContainer.style.display = 'none';
+        form.removeEventListener('submit', onSubmit);
       }
 
       function onCancel(e) {
         callback(null);
         text.value = '';
-        modalForm.style.display = 'none';
+        formContainer.style.display = 'none';
         cancelButton.removeEventListener('click', onCancel);
         document.body.removeEventListener('keydown', onEscape);
       }
@@ -90,11 +103,11 @@
       function onEscape(e) {
         if (e.key !== 'Escape') return;
         onCancel();        
-        
+        document.removeEventListener('keydown', onEscape)
       }
 
-      modalForm.style.display = 'block';
-      modalForm.style.backgroundColor = '#2228'
+      formContainer.style.display = 'block';
+      formContainer.style.backgroundColor = '#2228'
       text.focus();
     }
   </script>
