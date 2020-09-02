@@ -75,40 +75,50 @@
 
       form.addEventListener('submit', onSubmit);
       cancelButton.addEventListener('click', onCancel);
-      document.body.addEventListener('keydown', onEscape);
+      document.body.addEventListener('keyup', onKeyup);
 
-      document.onkeyup = e => {
-        if (e.key != 'Tab') return;
-        if (document.activeElement.tabIndex < 1) {
-          text.focus();
-        }     
-      }
+      formContainer.style.display = 'block';
+      formContainer.style.backgroundColor = '#2228'
+      document.body.style.overflow = 'hidden';
+
+      text.focus();
+
 
       function onSubmit(e) {
         e.preventDefault();
-        callback(text.value);
-        text.value = '';
-        formContainer.style.display = 'none';
-        form.removeEventListener('submit', onSubmit);
+        if (text.value == '') {
+          text.focus();
+        } else {
+          callback(text.value);
+          finish();
+        }
       }
 
       function onCancel(e) {
         callback(null);
+        finish()
+      }
+
+      function onKeyup(e) {
+        if (e.key == 'Tab') {
+          if (document.activeElement.tabIndex < 1) {
+            text.focus();
+          }     
+        }
+        if (e.key == 'Escape') {
+          onCancel();                
+        }
+      }
+
+      function finish() {
         text.value = '';
-        formContainer.style.display = 'none';
+        formContainer.style.display = 'none'; 
+        form.removeEventListener('submit', onSubmit);
         cancelButton.removeEventListener('click', onCancel);
-        document.body.removeEventListener('keydown', onEscape);
+        document.body.removeEventListener('keydown', onKeyup);
+        document.body.style.overflow = '';
       }
-
-      function onEscape(e) {
-        if (e.key !== 'Escape') return;
-        onCancel();        
-        document.removeEventListener('keydown', onEscape)
-      }
-
-      formContainer.style.display = 'block';
-      formContainer.style.backgroundColor = '#2228'
-      text.focus();
+      
     }
   </script>
 
