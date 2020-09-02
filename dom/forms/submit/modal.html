@@ -69,13 +69,16 @@
       const cancelButton = formContainer.querySelector('input[name="cancel"]');
       formContainer.querySelector('#prompt-message').innerHTML = html;
 
-      for (let i = 0; i < form.elements.length; i++) {
-        form.elements[i].tabIndex = i+1;
-      }
+      const firstFormElement = form.elements[0];
+      const lastFormElement = form.elements[form.elements.length - 1];
 
+      
       form.addEventListener('submit', onSubmit);
       cancelButton.addEventListener('click', onCancel);
-      document.body.addEventListener('keyup', onKeyup);
+      document.body.addEventListener('keyup', onEsc);
+      firstFormElement.addEventListener('keydown', blurFirst);      
+      lastFormElement.addEventListener('keydown', blurLast);      
+
 
       formContainer.style.display = 'block';
       formContainer.style.backgroundColor = '#2228'
@@ -99,14 +102,23 @@
         finish()
       }
 
-      function onKeyup(e) {
-        if (e.key == 'Tab') {
-          if (document.activeElement.tabIndex < 1) {
-            text.focus();
-          }     
-        }
+      function onEsc(e) {
         if (e.key == 'Escape') {
           onCancel();                
+        }
+      }
+
+      function blurFirst(e) {
+        if (e.key == 'Tab' && e.shiftKey) {
+          lastFormElement.focus();
+          e.preventDefault();
+        }
+      }
+
+      function blurLast(e) {
+        if (e.key == 'Tab' && !e.shiftKey) {
+          firstFormElement.focus();
+          e.preventDefault();
         }
       }
 
@@ -115,7 +127,9 @@
         formContainer.style.display = 'none'; 
         form.removeEventListener('submit', onSubmit);
         cancelButton.removeEventListener('click', onCancel);
-        document.body.removeEventListener('keydown', onKeyup);
+        document.body.removeEventListener('keydown', onEsc);
+        firstFormElement.removeEventListener('keydown', blurFirst);
+        lastFormElement.removeEventListener('keydown', blurLast);
         document.body.style.overflow = '';
       }
       
