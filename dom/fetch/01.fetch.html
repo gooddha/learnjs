@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+
+<body>
+
+  <script src="https://ru.js.cx/test/libs.js"></script>
+  <script>
+
+    async function getUsers(names) {
+      /* ваш код */
+      let jobs = [];
+      let url = 'https://api.github.com/users/';
+
+      for (let name of names) {
+
+        let job = fetch(url + name).then(response => {
+          if (response.ok) {
+            return response.json();
+          } else {
+            return null;
+          }
+        }, error => {
+          return null;
+        });
+
+        jobs.push(job);
+      }
+
+      let results = await Promise.all(jobs);
+
+      return (results);
+
+    }
+
+  </script>
+
+
+</body>
+
+</html>
