@@ -1,0 +1,43 @@
+<!-- 
+  https://learn.javascript.ru/localstorage#avtosohranenie-polya-formy
+  Автосохранение поля формы
+  Создайте поле textarea, значение которого будет автоматически сохраняться при каждом его изменении.
+  Когда пользователь закроет страницу и потом откроет её заново он должен увидеть последнее введённое значение.
+ -->
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=2.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Textarea</title>
+
+</head>
+
+<body>
+  <textarea style="width:200px; height: 60px; display: block; margin-bottom: 0.4em;"
+    placeholder="Напишите сообщение здесь" id="area"></textarea>
+  <button id="clear">Clear</button>
+
+  <script>
+    let area = document.getElementById('area');
+    area.value = localStorage.getItem('textAreaValue');
+
+    area.addEventListener('input', (e) => {
+      localStorage.setItem('textAreaValue', area.value);
+    })
+
+    let button = document.getElementById('clear');
+
+    button.addEventListener('click', (e) => {
+      localStorage.setItem('textAreaValue', '');
+      area.value = localStorage.getItem('textAreaValue');
+    })
+
+
+  </script>
+</body>
+
+</html>
