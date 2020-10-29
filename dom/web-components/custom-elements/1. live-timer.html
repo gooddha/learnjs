@@ -1,0 +1,94 @@
+<!-- 
+  https://learn.javascript.ru/custom-elements#element-zhivoy-taymer
+  Элемент "живой таймер"
+  У нас уже есть элемент <time-formatted>, показывающий красиво отформатированное время.
+
+  Создайте элемент <live-timer>, показывающий текущее время:
+    Внутри он должен использовать <time-formatted>, не дублировать его функциональность.
+    Должен тикать (обновляться) каждую секунду.
+    На каждом тике должно генерироваться пользовательское событие с именем tick, 
+    содержащее текущую дату в event.detail (смотрите главу Генерация пользовательских событий).
+
+ -->
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Live Timer Custom Elements</title>
+</head>
+
+<body>
+
+  <live-timer id="elem"></live-timer>
+
+  <!-- не меняйте это -->
+  <script>
+    class TimeFormatted extends HTMLElement {
+
+      render() {
+        let date = new Date(this.getAttribute('datetime') || Date.now());
+
+        this.innerHTML = new Intl.DateTimeFormat("default", {
+          year: this.getAttribute('year') || undefined,
+          month: this.getAttribute('month') || undefined,
+          day: this.getAttribute('day') || undefined,
+          hour: this.getAttribute('hour') || undefined,
+          minute: this.getAttribute('minute') || undefined,
+          second: this.getAttribute('second') || undefined,
+          timeZoneName: this.getAttribute('time-zone-name') || undefined,
+        }).format(date);
+      }
+
+      connectedCallback() {
+        if (!this.rendered) {
+          this.render();
+          this.rendered = true;
+        }
+      }
+
+      static get observedAttributes() {
+        return ['datetime', 'year', 'month', 'day', 'hour', 'minute', 'second', 'time-zone-name'];
+      }
+
+      attributeChangedCallback(name, oldValue, newValue) {
+        this.render();
+      }
+
+    }
+
+    customElements.define("time-formatted", TimeFormatted);
+
+    class LiveTimer extends HTMLElement {
+      /* ваш код здесь */
+      connectedCallback() {
+        let time = document.createElement('time-formatted');
+        time.setAttribute('hour', 'numeric');
+        time.setAttribute('minute', 'numeric');
+        time.setAttribute('second', 'numeric');
+
+        setInterval(() => {
+          let dateTime = new Date(Date.now());
+          time.setAttribute('datetime', `${dateTime}`)
+          this.innerHTML = time.innerHTML;
+          elem.dispatchEvent(new CustomEvent("tick", {
+            detail: dateTime
+          }));
+        }, 1000);
+      }
+
+
+    }
+
+    customElements.define("live-timer", LiveTimer);
+    elem.addEventListener('tick', event => console.log(event.detail));
+  </script>
+
+
+
+</body>
+
+</html>
