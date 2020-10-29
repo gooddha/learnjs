@@ -1,0 +1,68 @@
+<!-- 
+  https://learn.javascript.ru/js-animation#tasks
+  Анимируйте прыгающий мячик
+  Создайте прыгающий мячик.
+ -->
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Falling ball JS ainimation</title>
+  <script src="https://en.js.cx/libs/animate.js"></script>
+  <style>
+    #field {
+      height: 200px;
+      border-bottom: 3px black groove;
+      position: relative;
+    }
+
+    #ball {
+      position: absolute;
+      cursor: pointer;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div id="field">
+    <img src="https://en.js.cx/clipart/ball.svg" width="40" height="40" id="ball">
+  </div>
+
+  <script>
+    let ball = document.getElementById('ball');
+
+    ball.addEventListener('click', () => {
+
+      animate({
+        duration: 2000,
+        timing: makeEaseOut(bounce),
+        draw(time) {
+          ball.style.top = (time * 100) - ball.getBoundingClientRect().height / 2 + '%';
+        }
+      });
+
+      function bounce(timeFraction) {
+        for (let a = 0, b = 1, result; 1; a += b, b /= 2) {
+          if (timeFraction >= (7 - 4 * a) / 11) {
+            return -Math.pow((11 - 6 * a - 11 * timeFraction) / 4, 2) + Math.pow(b, 2)
+          }
+        }
+      }
+
+      function makeEaseOut(timing) {
+        return function (timeFraction) {
+          return 1 - timing(1 - timeFraction);
+        }
+      }
+    })
+  </script>
+
+</body>
+
+</html>
