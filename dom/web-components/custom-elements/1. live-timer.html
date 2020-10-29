@@ -64,20 +64,32 @@
 
     class LiveTimer extends HTMLElement {
       /* ваш код здесь */
-      connectedCallback() {
-        let time = document.createElement('time-formatted');
-        time.setAttribute('hour', 'numeric');
-        time.setAttribute('minute', 'numeric');
-        time.setAttribute('second', 'numeric');
 
-        setInterval(() => {
-          let dateTime = new Date(Date.now());
-          time.setAttribute('datetime', `${dateTime}`)
-          this.innerHTML = time.innerHTML;
-          elem.dispatchEvent(new CustomEvent("tick", {
-            detail: dateTime
-          }));
+      render() {
+        this.clock = document.createElement('time-formatted');
+        this.clock.setAttribute('hour', 'numeric');
+        this.clock.setAttribute('minute', 'numeric');
+        this.clock.setAttribute('second', 'numeric');
+        this.appendChild(this.clock);
+      }
+
+      update() {
+        let dateTime = new Date();
+        this.clock.setAttribute('datetime', `${dateTime}`);
+        elem.dispatchEvent(new CustomEvent("tick", {
+          detail: dateTime
+        }));
+      }
+
+      connectedCallback() {
+        this.render();
+        this.timer = setInterval(() => {
+          this.update()
         }, 1000);
+      }
+
+      disconnectedCallback() {
+        clearInterval(this.timer);
       }
 
 
